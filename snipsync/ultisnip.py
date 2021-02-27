@@ -282,6 +282,7 @@ class UltiSnipsFileSource:
     # def _get_all_snippet_files_for(self, ft):
     #     return find_all_snippet_files(ft)
 
-    def _parse_snippet_file(self, filedata, filename):
+    @staticmethod
+    def parse_snippet_file(filedata, filename):
         for event, data in _parse_snippets_file(filedata, filename):
             yield event, data
