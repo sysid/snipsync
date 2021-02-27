@@ -20,16 +20,15 @@ def test_read_xmlsnips(xmlsnips_file):
 
 
 class TestXmlSnippet:
-
     @pytest.fixture(autouse=True)
     def xml(self, xmlsnips_file):
         self.xml = XmlSnippet(xmlsnips_file)
 
     def test_exists_xxx(self):
-        assert self.xml.exists('xxx')
+        assert self.xml.exists("xxx")
 
     def test_not_exists_zzz(self):
-        assert not self.xml.exists('zzz')
+        assert not self.xml.exists("zzz")
 
     def test_create_xml(self, arr_snip):
         snip_xml = XmlSnippet.create_xml(arr_snip)
@@ -40,6 +39,29 @@ class TestXmlSnippet:
         snip_xml = self.xml.create_xml(arr_snip)
         self.xml.insert(snip_xml)
 
-        assert self.xml.exists('arr')
+        assert self.xml.exists("arr")
+        ET.indent(self.xml.et)
+        ET.dump(self.xml.et)
+
+    def test_upsert_snip_new(self, arr_snip):
+        self.xml.upsert(arr_snip)
+
+        assert self.xml.exists("arr")
+        ET.indent(self.xml.et)
+        ET.dump(self.xml.et)
+
+    def test_upsert_snip_existing(self, arr_snip):
+        # given an existing snippet
+        arr_snip._trigger = 'xxx'
+        assert not self.xml.exists("arr")
+        assert self.xml.exists("xxx")
+
+        # when value of snippet changes
+        arr_snip._value = 'xxx'
+        self.xml.upsert(arr_snip)
+
+        # then: snippet has been updated
+        snips = self.xml.et.findall("template[@name='xxx']")
+        assert snips[0].attrib.get('value') == 'xxx'
         ET.indent(self.xml.et)
         ET.dump(self.xml.et)

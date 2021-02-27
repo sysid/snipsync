@@ -8,12 +8,12 @@ from snipsync.ultisnip import UltiSnipsFileSource, UltiSnipsSnippetDefinition
 
 @pytest.fixture()
 def xmlsnips_file():
-    return Path('../data/user.xml')
+    return Path("../data/user.xml")
 
 
 @pytest.fixture()
 def ultisnips_file():
-    return Path('../data/sh.snippets')
+    return Path("../data/sh.snippets")
 
 
 @pytest.fixture()
