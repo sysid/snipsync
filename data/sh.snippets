@@ -1,0 +1,410 @@
+#### Interpolation example
+# python interpolation for more complex use case
+# $1 is mirror for placeholder ${1}. snippet ends in 0 placeholder
+snippet req "require a module" b
+let ${1} = require('${0:$1}');
+endsnippet
+
+snippet upper "ensure Caps"
+tr '[:lower:]' '[:upper:]'
+endsnippet
+
+snippet twdebug "check TWBASH_DEBUG"
+[ ! -z ${TWBASH_DEBUG+x} ] && Cyan "Sourcing $BASH_SOURCE"
+endsnippet
+
+snippet twenv "check env var is set"
+# ${var+x} evaluates to nothing if var is unset, and substitutes the string x otherwise
+if [ -z ${var+x} ]; then echo "var is unset"; else echo "var is set to '$var'"; fi
+endsnippet
+
+snippet suffix "get suffix"
+filename=$(basename -- "$fullfile")
+extension="${filename##*.}"
+filename="${filename%.*}"
+endsnippet
+
+snippet arr "array template"
+${1:arr}=(
+	"foo"
+	"bar"
+)
+echo "Array: ${${0:$1}[@]}"
+echo "Index: ${!${0:$1}[@]}"
+echo "Size: ${#${0:$1}[@]}"
+for el in "${${0:$1}[@]}"; do
+	echo $el
+done
+endsnippet
+
+snippet script "Script defaults"
+#!/usr/bin/env bash
+set +ex
+source ~/dev/binx/profile/sane_bash.sh
+
+TWBASH_DEBUG=true
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+START_TIME=$SECONDS
+
+echo "-M- Start $(date)"
+echo "-M- End: $(($SECONDS - $START_TIME))"
+exit 0
+endsnippet
+
+snippet envrc.sh
+#!/usr/bin/env bash
+
+source $HOME/dev/binx/profile/sane_bash.sh
+
+############### VENV ###############
+# Emulate the pipenvs's activate, because we can't source things in direnv
+#layout_pipenv
+#dotenv
+
+############### Exports ###############
+PROJ_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export PROJ_DIR
+Green "-M- exporting PROJ_DIR: $PROJ_DIR"
+
+tmux rename-window $(basename $PROJ_DIR)
+
+export senv="source $PROJ_DIR/scripts/env.sh"
+export PYTHONPATH=$PROJ_DIR
+
+PATH_add $PROJ_DIR/scripts
+
+############### Dotfile ###############
+DOTFILE_PYCHARM=".env.pycharm"
+>$DOTFILE_PYCHARM
+
+
+# create dotfile for pycharm (sanitized, no export)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+	DOTFILE_OS=".env.mac"
+elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+	DOTFILE_OS=".env.linux"
+fi
+if [[ -f "$DOTFILE_OS" ]]; then
+	echo "-M- sourcing $DOTFILE_OS"
+	#dotenv "$DOTFILE_OS"
+	source "$DOTFILE_OS"
+	cat "$DOTFILE_OS" | sed '/^echo/d' | sed '/^$/d' | sed 's/export //g' >> $DOTFILE_PYCHARM
+fi
+
+DOTFILE=".env.local"
+if [[ -f "$DOTFILE" ]]; then
+	echo "-M- sourcing $DOTFILE"
+	#dotenv $DOTFILE  # enforces trigger after change
+	source "$DOTFILE"
+	cat "$DOTFILE" | sed '/^echo/d' | sed '/^$/d' | sed 's/export //g' >> $DOTFILE_PYCHARM
+fi
+
+DOTFILE=".env"
+if [[ -f "$DOTFILE" ]]; then
+	echo "-M- sourcing $DOTFILE"
+	#dotenv $DOTFILE  # enforces trigger after change
+	source "$DOTFILE"
+	cat "$DOTFILE" | sed '/^echo/d' | sed '/^$/d' | sed 's/export //g' >> $DOTFILE_PYCHARM
+fi
+
+# make sure no confidential info gets into repo
+GITIGNORE='.gitignore'
+grep '.env$' "$GITIGNORE" > /dev/null 2>&1
+[ $? -ne 0 ] && echo ".env" >> "$GITIGNORE"
+#grep '.envrc$' "$GITIGNORE" > /dev/null 2>&1
+#[ $? -ne 0 ] && echo ".envrc" >> "$GITIGNORE"
+grep 'env.pycharm$' "$GITIGNORE" > /dev/null 2>&1
+[ $? -ne 0 ] && echo ".env.pycharm" >> "$GITIGNORE"
+endsnippet
+
+snippet yesno
+# yes_or_no "$message" && do_something
+function yes_or_no {
+	while true; do
+		read -p "$* [y/n]: " yn
+		case $yn in
+			[Yy]* ) return 0  ;;
+			[Nn]* ) echo "Aborted" ; return 1 ;;
+			* ) echo "Please answer yes or no." ;;
+		esac
+	done
+}
+endsnippet
+
+snippet continue "continue interactive"
+read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
+endsnippet
+
+snippet input "interactive input"
+read -p "Enter: " user
+endsnippet
+
+snippet new-window-complex
+	tmux new-window -c $HASS_DIR -n 'hass' "bash --init-file <(echo \" \
+		source $HOME/.profile; \
+		source $HASS_DIR/scripts/hassio_funcs.sh; \
+		echo \"HA environment loaded\" \
+		\")"
+endsnippet
+
+snippet bashinteractive
+bash --init-file <(echo "source \"$HOME/.profile\"; ${1:cmd}")
+endsnippet
+
+snippet here
+# must not be indented, "EOF" to suppress variable expansion within
+read -r -d '' var <<EOF
+${1:str}
+EOF
+echo "$var"
+endsnippet
+
+snippet main
+# if __main__ == '__main__'
+function main() {
+	${1:fn}
+}
+if [[ "${BASH_SOURCE[0]}" != "\$0" ]]; then
+	#echo "Script is being sourced, not calling main()"
+	:
+else
+	#echo "Script is a subshell, calling main()"
+	main "$@"
+fi
+endsnippet
+
+snippet catch
+exec 3>&2  # save stderr to fd3
+exec 2> /dev/null
+${1:do stuff}
+exec 2>&3  # restore stderr
+endsnippet
+
+snippet script_path "Get/sourcing script path"
+#SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$(dirname ${BASH_SOURCE[0]})"
+Cyan "Sourcing ${BASH_SOURCE}"
+endsnippet
+
+snippet "
+echo "${1:string}"
+endsnippet
+
+snippet if "if ... then (if)"
+if ${2:[[ ${1:condition} ]]}; then
+		${0:#statements}
+fi
+endsnippet
+
+snippet print "print"
+printf "${1:format}\n" ${2:args}
+endsnippet
+
+snippet func "Function Definition"
+${1:name} () {
+	debug "${FUNCNAME[0]}"
+	return 0
+}
+endsnippet
+
+snippet getopts_func "Function Definition with getopts"
+${1:name} () {
+	#foo
+	#foo -a bc bar quux
+	#foo -x
+
+	foo_usage() { echo "${FUNCNAME[0]}: [-a <arg>]" 1>&2; exit; }
+
+	local OPTIND opt a
+	while getopts ":a:" opt; do
+		case "${opt}" in
+			a)
+				a="${OPTARG}"
+				;;
+			*)
+				foo_usage
+				return 1
+				;;
+		esac
+	done
+	shift $((OPTIND-1))
+
+	echo "a: [${a}], non-option arguments: $*"
+	return 0
+}
+endsnippet
+
+
+snippet !# "Hash Bang"
+#!/bin/bash
+endsnippet
+
+snippet case "case"
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	*)
+		echo $"Usage: $0 {start|stop}"
+		exit 1
+esac
+endsnippet
+
+snippet if "if ... elif ... then" b
+if list; then
+	list
+elif
+	list
+else
+	list
+fi
+endsnippet
+
+snippet while "while" b
+while ${2:[[ ${1:condition} ]]}; do
+
+done
+endsnippet
+
+snippet getopts_script "Getopts for script" b
+__ScriptVersion="version"
+#export TWBASH_DEBUG="yes"
+file=""
+rflag=false
+sflag=false
+
+function usage () {
+	echo "Usage :   [options] [--]
+
+	Options:
+	-h:             Display this message
+	-v:             Display script version
+	-f filename:    Specifiy filename
+	-r:             Run
+	-s:             Stop"
+}
+
+function x () {
+	:
+}
+function y () {
+	:
+}
+
+#------------------------------------- main -------------------------------------
+while getopts ":hvf:" opt
+do
+	case $opt in
+		h) usage; exit 0;;
+		v) echo " -- Version $__ScriptVersion"; exit 0   ;;
+		f) file=$OPTARG;;
+		r) rflag=true; echo "Starting Home-Assistant"; x;;
+		s) sflag=true; echo "Stopping Home-Assistant"; y;;
+		*) echo -e "\n  Option does not exist : $OPTARG\n"
+			usage; exit 1;;
+	esac
+done
+
+shift $(($OPTIND-1))
+debug "file: $file positional: $*"
+
+# in case args need to be passed to function, collect first
+#$rflag && x $file
+#$sflag && y $file
+
+if ! $rflag && ! $sflag; then
+	usage
+	exit 1
+fi
+endsnippet
+
+# snippet exists
+snippet -z
+# Assert there is at least one tag provided
+test -z "\$1" && echo "-E- tag required." 1>&2 && exit 1
+endsnippet
+
+snippet loop
+for cmd in "${Cmds[@]}"; do
+	echo "$cmd"
+done
+endsnippet
+
+snippet test
+${1:TestName} () {
+	printf "____Running $1\n"
+	ref=${2:refVaue}
+	got=$(${3:gotValue})
+	if [ "$got" == "$ref" ]; then
+		Green "Pass: $got"
+	else
+		printf "Expected: %s\n" "$ref"
+		printf "Got: %s\n" "$got"
+		Red "NOK"
+	fi
+	return 0
+}
+endsnippet
+
+snippet default_variable
+default="${1:value}"
+${1:vname}=$\{$1:-$default\}
+endsnippet
+
+snippet git-cmd "template for git command"
+#!/usr/bin/env bash
+# based on https://github.com/tj/git-extras/tree/master/helper
+#
+# reset environment variables that could interfere with normal usage
+export GREP_OPTIONS=
+# put all utility functions here
+
+# make a temporary file
+git_extra_mktemp() {
+	mktemp -t "$(basename "$0")".XXXXXXX
+}
+
+git_extra_default_branch() {
+	local default_branch
+	default_branch=$(git config --get git-extras.default-branch)
+	if [ -z "$default_branch" ]; then
+		echo "master"
+	else
+		echo "$default_branch"
+	fi
+}
+#
+# check whether current directory is inside a git repository
+#
+
+is_git_repo() {
+	git rev-parse --show-toplevel > /dev/null 2>&1
+	result=$?
+	if test $result != 0; then
+		>&2 echo 'Not a git repo!'
+		exit $result
+	fi
+}
+
+#
+# check whether current directory contains any git commit
+#
+
+has_git_commit() {
+	git rev-parse --short HEAD > /dev/null 2>&1
+	result=$?
+	if test $result != 0; then
+		>&2 echo 'Not git commit found!'
+		exit $result
+	fi
+}
+################################################################################
+# main
+################################################################################
+has_git_commit
+is_git_repo
+...
+endsnippet
