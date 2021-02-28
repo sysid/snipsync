@@ -44,6 +44,23 @@ def snip_xml():
 
 
 @pytest.fixture()
+def snip2_xml():
+    return ET.XML(
+        """
+            <template name="case" value="case &quot;$1&quot; in&#10;    $actuator$)&#10;        ActuatorAgent&#10;        ;;&#10;    $debugger$)&#10;        Debugger&#10;        ;;&#10;    *)&#10;        echo &quot;Usage: {$actuator$|$debugger$}&quot;&#10;        exit 1&#10;esac" description="" toReformat="true" toShortenFQNames="true">
+            <variable name="actuator" expression="" defaultValue="" alwaysStopAt="true" />
+            <variable name="debugger" expression="" defaultValue="" alwaysStopAt="true" />
+            <context>
+            <option name="Bash" value="true" />
+            <option name="SHELL_SCRIPT" value="true" />
+            </context>
+            </template>
+        """
+    )
+
+
+# select shell arr snippet
+@pytest.fixture()
 def arr_snip(ultisnips) -> UltiSnipsSnippetDefinition:
     source = UltiSnipsFileSource()
     data = source.parse_snippet_file(ultisnips, ultisnips_file)

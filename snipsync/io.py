@@ -1,8 +1,11 @@
+import logging
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Union
 
 from snipsync.ultisnip import UltiSnipsSnippetDefinition
+
+_log = logging.getLogger(__name__)
 
 
 def read_ultisnips(file: Path) -> str:
@@ -72,5 +75,7 @@ class XmlSnippet:
             old_snip = snips[0]
             old_snip.set('value', snip._value)
             old_snip.set('description', snip._description)
+            _log.info(f"Update snippet: {snip.trigger}")
         else:
             self.insert(snip_xml)
+            _log.info(f"Inserted snippet: {snip.trigger}")

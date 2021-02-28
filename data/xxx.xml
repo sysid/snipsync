@@ -1,0 +1,352 @@
+<templateSet group="user">
+  <template name="setup_platform" value="def setup_platform(hass, config, add_devices, discovery_info=None):&#10;    add_devices([$device$(config['$parm_name$'])])" description="" toReformat="true" toShortenFQNames="true">
+    <variable name="device" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="parm_name" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="Python" value="true" />
+      <option name="Python_Class" value="false" />
+    </context>
+  </template>
+  <template name="twlog" value="import logging&#10;_LOGGER = logging.getLogger(__name__)&#10;handler = logging.StreamHandler(sys.stdout)&#10;handler.setFormatter(logging.Formatter(&#10;    '%(asctime)-15s %(levelname)s %(name)s %(funcName)s:%(lineno)d %(message)s',&#10;    datefmt='%Y-%m-%d %H:%M:%S'))&#10;_LOGGER.addHandler(handler)&#10;_LOGGER.setLevel(logging.DEBUG)" description="" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="dbg" value="import ipdb; ipdb.set_trace()  # NOQA XXX BREAKPOINT" description="tw dbg" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="decorator" value="def decorator(func):&#10;    @functools.wraps(func)&#10;    def wrapper(*args, **kwargs):&#10;        # Do something before&#10;        value = func(*args, **kwargs)&#10;        # Do something after&#10;        return value&#10;&#10;    return wrapper" description="tw decorator" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="import" value="import sys, os&#10;sys.path.insert(0, os.path.expandvars(os.path.expanduser('$path$'))" description="" toReformat="true" toShortenFQNames="true">
+    <variable name="path" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="Python" value="true" />
+      <option name="Python_Class" value="false" />
+    </context>
+  </template>
+  <template name="twclass" value="class $MyClass$(object):&#10;   &quot;&quot;&quot;Docstring for $MyClass$. &quot;&quot;&quot;&#10;&#10;   @classmethod  # classmethod always gets class as parameter&#10;   def get_clsname(cls):&#10;      return cls.__name__&#10;&#10;   def __init__(self):&#10;      super().__init__()&#10;&#10;   def __str__(self):&#10;       return &quot;{}/{}&quot;.format(&#10;           &quot;/&quot;.join(base.__name__ for base in self.__class__.__bases__),&#10;           self.__class__.__name__,&#10;       )&#10;       &#10;    def save(self, filename: Union[str, PathLike], prop: str = None):&#10;        with open(filename, 'wb') as f:&#10;            if prop is None:&#10;                _log.info(f&quot;Saving {self.__class__.__name__} to {f}.&quot;)&#10;                pickle.dump(self, f)&#10;                return&#10;            if prop in self.__dict__.keys():&#10;                _log.info(f&quot;Saving {prop}.&quot;)&#10;                data = getattr(self, prop)&#10;                pickle.dump(data, f)&#10;            else:&#10;                _log.warning(f&quot;{prop} does not exist on {self.__class__.__name__}.&quot;)&#10;&#10;    @staticmethod&#10;    def load(filename: PathLike) -&gt; 'Config':&#10;        _log.info(f'Loading instance: {filename}')&#10;        with open(filename, 'rb') as f:&#10;            return pickle.load(f)" description="" toReformat="true" toShortenFQNames="true">
+    <variable name="MyClass" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="Python" value="true" />
+      <option name="Python_Class" value="false" />
+    </context>
+  </template>
+  <template name="print_center" value="print('-' * 80)&#10;        print('{:^80}'.format(&quot;$title$&quot;))&#10;        print('-' * 80)" description="" toReformat="true" toShortenFQNames="true">
+    <variable name="title" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="twlogbasic" value="import logging&#10;_LOGGER = logging.getLogger(__name__)&#10;log_fmt = r'%(asctime)-15s %(levelname)s %(name)s %(funcName)s:%(lineno)d %(message)s'&#10;logging.basicConfig(format=log_fmt, level=logging.DEBUG)" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+      <option name="Python_Class" value="false" />
+    </context>
+  </template>
+  <template name="twtest" value="&quot;&quot;&quot;&#10;python -m unittest tests.test_schedule&#10;python -m unittest tests.test_schedule.TestSchedule.test__check_periodicity -v&#10;&quot;&quot;&quot;&#10;from datetime import datetime&#10;from unittest import TestCase&#10;&#10;from helper import Schedule&#10;&#10;&#10;class $TestSchedule$(TestCase):&#10;    def setUp(self):&#10;        self.schedule = []&#10;&#10;    def test_get_value(self):&#10;        s = Schedule(self.schedule)&#10;        v = s.get_value(datetime.strptime('23:59', '%H:%M').time())&#10;        self.assertEqual(v, 24)&#10;&#10;    def test__check_periodicity(self):  # nothing is ever raised&#10;        schedule = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]&#10;        with self.assertRaises(AssertionError):&#10;            s = Schedule(schedule)" description="" toReformat="true" toShortenFQNames="true">
+    <variable name="TestSchedule" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="Python" value="true" />
+      <option name="Python_Class" value="false" />
+    </context>
+  </template>
+  <template name="ldbg" value="_LOGGER.debug(f'{dbg()}:$msg$')" description="debug logger" toReformat="true" toShortenFQNames="true">
+    <variable name="msg" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="evt_state_changed_handler" value="def evt_state_changed_energy_asset(self, e):&#10;        entity_id = e.data.get('entity_id')&#10;        domain, name = split_entity_id(entity_id)&#10;        old_state = new_state = old_attr = new_attr = None&#10;&#10;        if domain == ENERGY_ASSET_DOMAIN:&#10;            LOGGER.debug(f'{dbg()}: {e}')&#10;            # state creation&#10;            if e.data['old_state'] is None and e.data['new_state'] is not None:&#10;                new_state = e.data['new_state'].state&#10;                new_attr = e.data['new_state'].attributes&#10;&#10;            # state change&#10;            elif e.data['old_state'] is not None and e.data['new_state'] is not None:&#10;                old_state = e.data['old_state'].state&#10;                old_attr = e.data['old_state'].attributes&#10;                new_state = e.data['new_state'].state&#10;                new_attr = e.data['new_state'].attributes&#10;&#10;            # state removal&#10;            elif e.data['old_state'] is not None and e.data['new_state'] is None:&#10;                old_state = e.data['old_state'].state&#10;                old_attr = e.data['old_state'].attributes&#10;&#10;            else:&#10;                _LOGGER.exception(&quot;Invalid state change&quot;, exc_info=True)" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="twprint" value="print(f&quot;\n{'xxxxx':*^80}&quot;)" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="dbg()" value="def dbg():&#10;    '''returns function name of current function'''&#10;    # return inspect.getouterframes(inspect.currentframe())[1].function&#10;    # return inspect.currentframe().f_code.co_name&#10;    cf = inspect.currentframe()&#10;    return &quot;{}:{}&quot;.format(cf.f_back.f_code.co_name, cf.f_back.f_lineno)" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+      <option name="Python_Class" value="false" />
+    </context>
+  </template>
+  <template name="vagent" value="import logging&#10;&#10;from volttron.platform.vip.agent import Agent, Core, PubSub, RPC&#10;from volttron.platform.agent import utils&#10;&#10;utils.setup_logging()&#10;_log = logging.getLogger(__name__)&#10;&#10;&#10;class MyAgent(Agent):&#10;    def __init__(self, config_path, **kwargs):&#10;        self.config = utils.load_config(config_path)&#10;&#10;    @Core.receiver('onsetup')&#10;    def onsetup(self, sender, **kwargs):&#10;        pass&#10;&#10;    @Core.receiver('onstart')&#10;    def onstart(self, sender, **kwargs):&#10;        self.vip.heartbeat.start()&#10;&#10;    @Core.receiver('onstop')&#10;    def onstop(self, sender, **kwargs):&#10;        pass&#10;&#10;    @Core.receiver('onfinish')&#10;    def onfinish(self, sender, **kwargs):&#10;        pass&#10;&#10;    @PubSub.subscribe('pubsub', 'some/topic')&#10;    def on_match(self, peer, sender, bus,  topic, headers, message):&#10;        pass&#10;&#10;    @RPC.export&#10;    def my_method(self):&#10;        pass&#10;&#10;def main():&#10;    utils.vip_main(MyAgent)&#10;&#10;if __name__ == '__main__':&#10;    try:&#10;        main()&#10;    except KeyboardInterrupt:&#10;        pass" description="volttron agent skeleton" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="case" value="case &quot;$1&quot; in&#10;&#09;start)&#10;&#09;&#09;start&#10;&#09;&#09;;;&#10;&#09;stop)&#10;&#09;&#09;stop&#10;&#09;&#09;;;&#10;&#09;*)&#10;&#09;&#09;echo $&quot;Usage: $0 {start|stop}&quot;&#10;&#09;&#09;exit 1&#10;esac" description="&quot;case&quot;" toReformat="true" toShortenFQNames="true">
+    <variable name="actuator" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="debugger" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="getopts" value="function usage () {&#10;    echo &quot;Usage : $0  [options] [--]&#10;&#8226;&#8226;&#8226;&#8226;&#10;    Options:&#10;    -h:             Display this message&#10;    -v:             Display script version&#10;    -f filename:    Specifiy filename&#10;    -r:             Run&#10;    -s:             Stop&quot;&#10;}&#10;&#10;rlfag=false&#10;sflag=fals&#10;&#10;while getopts &quot;:hvf:&quot; opt&#10;do&#10;    case $opt in&#10;        h) usage; exit 0;;&#10;        v) echo &quot; -- Version $__ScriptVersion&quot;; exit 0   ;;&#10;        f) file=$OPTARG;;&#10;        r) rflag=true; echo &quot;Starting Home-Assistant&quot;; run_docker;;&#10;        s) sflag=true; echo &quot;Stopping Home-Assistant&quot;; stop_docker;;&#10;        *) echo -e &quot;\n  Option does not exist : $OPTARG\n&quot;&#10;            usage; exit 1;;&#10;    esac&#10;done&#10;&#10;shift $(($OPTIND-1))&#10;debug &quot;file: $file positional: $*&quot;&#10;&#10;if ! $rflag &amp;&amp; ! $sflag; then&#10;    usage&#10;    exit 1&#10;fi" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="func" value="${1:name} () {&#10;&#09;debug &quot;${FUNCNAME[0]}&quot;&#10;&#09;return 0&#10;}" description="&quot;Function Definition&quot;" toReformat="true" toShortenFQNames="true">
+    <variable name="name" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="Bash" value="true" />
+    </context>
+  </template>
+  <template name="ldbg2" value="_log.debug(&quot;{}:$text$&quot;.format(dbg()))" description="" toReformat="true" toShortenFQNames="true">
+    <variable name="text" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="-z" value="# Assert there is at least one tag provided&#10;test -z &quot;\$1&quot; &amp;&amp; echo &quot;-E- tag required.&quot; 1&gt;&amp;2 &amp;&amp; exit 1" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+    </context>
+  </template>
+  <template name="twvalidate" value="err = $name$Schema().validate(kwargs)&#10;assert len(err) == 0, &quot;$name$Schema ParsingError: {}&quot;.format(err)" description="" toReformat="true" toShortenFQNames="true">
+    <variable name="name" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="twvalidate2" value="try:&#10;    _ = $xxx$Schema().load($json$)&#10;except ValidationError as e:&#10;    _log.error(&quot;ERROR PROCESSING CONFIGURATION: {}&quot;.format(e))&#10;    return" description="" toReformat="true" toShortenFQNames="true">
+    <variable name="xxx" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="json" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="Python" value="true" />
+      <option name="Python_Class" value="false" />
+    </context>
+  </template>
+  <template name="twcapsys" value="captured = capsys.readouterr()&#10;assert '16 timesteps' in captured.out&#10;assert captured.err == &quot;&quot;" description="capture stderr/stout during pytest" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="twcaplog" value="caplog.set_level(logging.DEBUG)&#10;for record in caplog.records:&#10;    assert record.levelname != 'CRITICAL'&#10;assert 'wally' not in caplog.text" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="twjsondump" value="with codecs.open(path, 'w', encoding='utf-8') as f:&#10;    json.dump(self.sim_config, f, indent=4)" description="json 2/3 compatible dump version" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="2to3" value="from __future__ import (absolute_import, division,&#10;                        print_function, unicode_literals)&#10;from builtins import *" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="twsyspath" value="sys.path.append(path)&#10;sys.path.insert(0, path)" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+    </context>
+  </template>
+  <template name="twscript" value="#!/usr/bin/env python&#10;import logging&#10;from pathlib import Path&#10;&#10;import click&#10;&#10;_log = logging.getLogger(__name__)&#10;&#10;log_fmt = r'%(asctime)-15s %(levelname)s %(name)s %(funcName)s:%(lineno)d %(message)s'&#10;logging.basicConfig(format=log_fmt, level=logging.DEBUG)&#10;&#10;&#10;@click.group()&#10;@click.option('--debug/--no-debug', default=False)&#10;@click.pass_context&#10;def cli(ctx, debug):&#10;    # ensure that ctx.obj exists and is a dict (in case `cli()` is called by means other than the `if` block below&#10;    ctx.ensure_object(dict)&#10;&#10;    ctx.obj['DEBUG'] = debug&#10;&#10;&#10;@click.command()&#10;@click.option('--config', '-c', 'config_dir', default='data')&#10;@click.option('--plot', '-p', 'plot', default=tuple(), type=int, multiple=True)&#10;@click.pass_context&#10;def all(ctx, config_dir, plot):&#10;    click.echo(f&quot;Debug is {ctx.obj['DEBUG']}&quot;)&#10;&#10;&#10;cli.add_command(all)&#10;&#10;&#10;if __name__ == '__main__':&#10;    cli(obj={})" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+      <option name="Python_Class" value="false" />
+    </context>
+  </template>
+  <template name="twplot" value="import numpy as np&#10;import plotly.graph_objects as go&#10;import import matplotlib.pyplot as plt&#10;&#10;plt.plot(np.linspace(1, 4, 10), np.logspace(1, 4, 10))&#10;plt.show()&#10;&#10;fig = go.Figure(data=go.Scatter(x=np.linspace(1, 4, 10), y=np.logspace(1, 4, 10)))&#10;fig.show()" description="plot f(x)" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+      <option name="Python_Class" value="false" />
+    </context>
+  </template>
+  <template name="twimage" value="import numpy as np&#10;import plotly.express as px&#10;img = np.arange(100).reshape((10, 10))&#10;fig = px.imshow(img, color_continuous_scale='gray')&#10;fig.show()&#10;&#10;data = go.Heatmap(z=img, colorscale='gray', showscale=False)&#10;fig = go.Figure(data=data)&#10;fig.update_layout(width=500, height=500) &#10;fig.show()" description="plots image" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Python" value="true" />
+      <option name="Python_Class" value="false" />
+    </context>
+  </template>
+  <template name="twshell-script" value="#!/usr/bin/env bash&#10;################################################################################&#10;# sync.sh&#10;################################################################################&#10;&#10;files=(xxx yyy)&#10;&#10;SCRIPT_DIR=&quot;$( cd &quot;$( dirname &quot;${BASH_SOURCE[0]}&quot; )&quot; &amp;&amp; pwd )&quot;&#10;REPO=&quot;$SCRIPT_DIR/..&quot;&#10;&#10;pushd () {&#10;    command pushd &quot;$@&quot; &gt; /dev/null&#10;}&#10;&#10;popd () {&#10;    command popd &gt; /dev/null&#10;}&#10;&#10;pushd &quot;$REPO&quot; || exit 1&#10;&#10;for item in &quot;${files[@]}&quot;; do&#10;    filename=&quot;$REPO/$item&quot;&#10;    echo &quot;$item&quot;&#10;    echo &quot;................................................................................&quot;&#10;done&#10;&#10;popd || exit" description="Shell Template" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="suffix" value="filename=$(basename -- &quot;$fullfile&quot;)&#10;extension=&quot;${filename##*.}&quot;&#10;filename=&quot;${filename%.*}&quot;" description="&quot;get suffix&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="xxx" value="${1:arr}=(&#10;&#09;&quot;foo&quot;&#10;&#09;&quot;bar&quot;&#10;)&#10;echo &quot;Array: ${${0:$1}[@]}&quot;&#10;echo &quot;Index: ${!${0:$1}[@]}&quot;&#10;echo &quot;Size: ${#${0:$1}[@]}&quot;&#10;for el in &quot;${${0:$1}[@]}&quot;; do&#10;&#09;echo $el&#10;done" description="xxx" toReformat="true" toShortenFQNames="true">
+    <variable name="xxx" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="req" value="let ${1} = require('${0:$1}');" description="&quot;require a module&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="upper" value="tr '[:lower:]' '[:upper:]'" description="&quot;ensure Caps&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="twdebug" value="[ ! -z ${TWBASH_DEBUG+x} ] &amp;&amp; Cyan &quot;Sourcing $BASH_SOURCE&quot;" description="&quot;check TWBASH_DEBUG&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="twenv" value="# ${var+x} evaluates to nothing if var is unset, and substitutes the string x otherwise&#10;if [ -z ${var+x} ]; then echo &quot;var is unset&quot;; else echo &quot;var is set to '$var'&quot;; fi" description="&quot;check env var is set&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="arr" value="${1:arr}=(&#10;&#09;&quot;foo&quot;&#10;&#09;&quot;bar&quot;&#10;)&#10;echo &quot;Array: ${${0:$1}[@]}&quot;&#10;echo &quot;Index: ${!${0:$1}[@]}&quot;&#10;echo &quot;Size: ${#${0:$1}[@]}&quot;&#10;for el in &quot;${${0:$1}[@]}&quot;; do&#10;&#09;echo $el&#10;done" description="&quot;array template&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="script" value="#!/usr/bin/env bash&#10;set +ex&#10;source ~/dev/binx/profile/sane_bash.sh&#10;&#10;TWBASH_DEBUG=true&#10;SCRIPT_DIR=&quot;$( cd &quot;$( dirname &quot;${BASH_SOURCE[0]}&quot; )&quot; &amp;&amp; pwd )&quot;&#10;START_TIME=$SECONDS&#10;&#10;echo &quot;-M- Start $(date)&quot;&#10;echo &quot;-M- End: $(($SECONDS - $START_TIME))&quot;&#10;exit 0" description="&quot;Script defaults&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="envrc.sh" value="#!/usr/bin/env bash&#10;&#10;source $HOME/dev/binx/profile/sane_bash.sh&#10;&#10;############### VENV ###############&#10;# Emulate the pipenvs's activate, because we can't source things in direnv&#10;#layout_pipenv&#10;#dotenv&#10;&#10;############### Exports ###############&#10;PROJ_DIR=&quot;$( cd &quot;$( dirname &quot;${BASH_SOURCE[0]}&quot; )&quot; &amp;&amp; pwd )&quot;&#10;export PROJ_DIR&#10;Green &quot;-M- exporting PROJ_DIR: $PROJ_DIR&quot;&#10;&#10;tmux rename-window $(basename $PROJ_DIR)&#10;&#10;export senv=&quot;source $PROJ_DIR/scripts/env.sh&quot;&#10;export PYTHONPATH=$PROJ_DIR&#10;&#10;PATH_add $PROJ_DIR/scripts&#10;&#10;############### Dotfile ###############&#10;DOTFILE_PYCHARM=&quot;.env.pycharm&quot;&#10;&gt;$DOTFILE_PYCHARM&#10;&#10;&#10;# create dotfile for pycharm (sanitized, no export)&#10;if [[ &quot;$OSTYPE&quot; == &quot;darwin&quot;* ]]; then&#10;&#09;DOTFILE_OS=&quot;.env.mac&quot;&#10;elif [[ &quot;$OSTYPE&quot; == &quot;linux-gnu&quot; ]]; then&#10;&#09;DOTFILE_OS=&quot;.env.linux&quot;&#10;fi&#10;if [[ -f &quot;$DOTFILE_OS&quot; ]]; then&#10;&#09;echo &quot;-M- sourcing $DOTFILE_OS&quot;&#10;&#09;#dotenv &quot;$DOTFILE_OS&quot;&#10;&#09;source &quot;$DOTFILE_OS&quot;&#10;&#09;cat &quot;$DOTFILE_OS&quot; | sed '/^echo/d' | sed '/^$/d' | sed 's/export //g' &gt;&gt; $DOTFILE_PYCHARM&#10;fi&#10;&#10;DOTFILE=&quot;.env.local&quot;&#10;if [[ -f &quot;$DOTFILE&quot; ]]; then&#10;&#09;echo &quot;-M- sourcing $DOTFILE&quot;&#10;&#09;#dotenv $DOTFILE  # enforces trigger after change&#10;&#09;source &quot;$DOTFILE&quot;&#10;&#09;cat &quot;$DOTFILE&quot; | sed '/^echo/d' | sed '/^$/d' | sed 's/export //g' &gt;&gt; $DOTFILE_PYCHARM&#10;fi&#10;&#10;DOTFILE=&quot;.env&quot;&#10;if [[ -f &quot;$DOTFILE&quot; ]]; then&#10;&#09;echo &quot;-M- sourcing $DOTFILE&quot;&#10;&#09;#dotenv $DOTFILE  # enforces trigger after change&#10;&#09;source &quot;$DOTFILE&quot;&#10;&#09;cat &quot;$DOTFILE&quot; | sed '/^echo/d' | sed '/^$/d' | sed 's/export //g' &gt;&gt; $DOTFILE_PYCHARM&#10;fi&#10;&#10;# make sure no confidential info gets into repo&#10;GITIGNORE='.gitignore'&#10;grep '.env$' &quot;$GITIGNORE&quot; &gt; /dev/null 2&gt;&amp;1&#10;[ $? -ne 0 ] &amp;&amp; echo &quot;.env&quot; &gt;&gt; &quot;$GITIGNORE&quot;&#10;#grep '.envrc$' &quot;$GITIGNORE&quot; &gt; /dev/null 2&gt;&amp;1&#10;#[ $? -ne 0 ] &amp;&amp; echo &quot;.envrc&quot; &gt;&gt; &quot;$GITIGNORE&quot;&#10;grep 'env.pycharm$' &quot;$GITIGNORE&quot; &gt; /dev/null 2&gt;&amp;1&#10;[ $? -ne 0 ] &amp;&amp; echo &quot;.env.pycharm&quot; &gt;&gt; &quot;$GITIGNORE&quot;" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="yesno" value="# yes_or_no &quot;$message&quot; &amp;&amp; do_something&#10;function yes_or_no {&#10;&#09;while true; do&#10;&#09;&#09;read -p &quot;$* [y/n]: &quot; yn&#10;&#09;&#09;case $yn in&#10;&#09;&#09;&#09;[Yy]* ) return 0  ;;&#10;&#09;&#09;&#09;[Nn]* ) echo &quot;Aborted&quot; ; return 1 ;;&#10;&#09;&#09;&#09;* ) echo &quot;Please answer yes or no.&quot; ;;&#10;&#09;&#09;esac&#10;&#09;done&#10;}" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="continue" value="read -p &quot;Continue? (Y/N): &quot; confirm &amp;&amp; [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1" description="&quot;continue interactive&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="input" value="read -p &quot;Enter: &quot; user" description="&quot;interactive input&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="new-window-complex" value="&#09;tmux new-window -c $HASS_DIR -n 'hass' &quot;bash --init-file &lt;(echo \&quot; \&#10;&#09;&#09;source $HOME/.profile; \&#10;&#09;&#09;source $HASS_DIR/scripts/hassio_funcs.sh; \&#10;&#09;&#09;echo \&quot;HA environment loaded\&quot; \&#10;&#09;&#09;\&quot;)&quot;" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="bashinteractive" value="bash --init-file &lt;(echo &quot;source \&quot;$HOME/.profile\&quot;; ${1:cmd}&quot;)" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="here" value="# must not be indented, &quot;EOF&quot; to suppress variable expansion within&#10;read -r -d '' var &lt;&lt;EOF&#10;${1:str}&#10;EOF&#10;echo &quot;$var&quot;" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="main" value="# if __main__ == '__main__'&#10;function main() {&#10;&#09;${1:fn}&#10;}&#10;if [[ &quot;${BASH_SOURCE[0]}&quot; != &quot;\$0&quot; ]]; then&#10;&#09;#echo &quot;Script is being sourced, not calling main()&quot;&#10;&#09;:&#10;else&#10;&#09;#echo &quot;Script is a subshell, calling main()&quot;&#10;&#09;main &quot;$@&quot;&#10;fi" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="catch" value="exec 3&gt;&amp;2  # save stderr to fd3&#10;exec 2&gt; /dev/null&#10;${1:do stuff}&#10;exec 2&gt;&amp;3  # restore stderr" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="script_path" value="#SCRIPT_DIR=&quot;$( cd &quot;$( dirname &quot;${BASH_SOURCE[0]}&quot; )&quot; &amp;&amp; pwd )&quot;&#10;SCRIPT_DIR=&quot;$(dirname ${BASH_SOURCE[0]})&quot;&#10;Cyan &quot;Sourcing ${BASH_SOURCE}&quot;" description="&quot;Get/sourcing script path&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="&quot;" value="echo &quot;${1:string}&quot;" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="if" value="if list; then&#10;&#09;list&#10;elif&#10;&#09;list&#10;else&#10;&#09;list&#10;fi" description="&quot;if ... elif ... then&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="print" value="printf &quot;${1:format}\n&quot; ${2:args}" description="&quot;print&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="getopts_func" value="${1:name} () {&#10;&#09;#foo&#10;&#09;#foo -a bc bar quux&#10;&#09;#foo -x&#10;&#10;&#09;foo_usage() { echo &quot;${FUNCNAME[0]}: [-a &lt;arg&gt;]&quot; 1&gt;&amp;2; exit; }&#10;&#10;&#09;local OPTIND opt a&#10;&#09;while getopts &quot;:a:&quot; opt; do&#10;&#09;&#09;case &quot;${opt}&quot; in&#10;&#09;&#09;&#09;a)&#10;&#09;&#09;&#09;&#09;a=&quot;${OPTARG}&quot;&#10;&#09;&#09;&#09;&#09;;;&#10;&#09;&#09;&#09;*)&#10;&#09;&#09;&#09;&#09;foo_usage&#10;&#09;&#09;&#09;&#09;return 1&#10;&#09;&#09;&#09;&#09;;;&#10;&#09;&#09;esac&#10;&#09;done&#10;&#09;shift $((OPTIND-1))&#10;&#10;&#09;echo &quot;a: [${a}], non-option arguments: $*&quot;&#10;&#09;return 0&#10;}" description="&quot;Function Definition with getopts&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="!#" value="#!/bin/bash" description="&quot;Hash Bang&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="while" value="while ${2:[[ ${1:condition} ]]}; do&#10;&#10;done" description="&quot;while&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="getopts_script" value="__ScriptVersion=&quot;version&quot;&#10;#export TWBASH_DEBUG=&quot;yes&quot;&#10;file=&quot;&quot;&#10;rflag=false&#10;sflag=false&#10;&#10;function usage () {&#10;&#09;echo &quot;Usage :   [options] [--]&#10;&#10;&#09;Options:&#10;&#09;-h:             Display this message&#10;&#09;-v:             Display script version&#10;&#09;-f filename:    Specifiy filename&#10;&#09;-r:             Run&#10;&#09;-s:             Stop&quot;&#10;}&#10;&#10;function x () {&#10;&#09;:&#10;}&#10;function y () {&#10;&#09;:&#10;}&#10;&#10;#------------------------------------- main -------------------------------------&#10;while getopts &quot;:hvf:&quot; opt&#10;do&#10;&#09;case $opt in&#10;&#09;&#09;h) usage; exit 0;;&#10;&#09;&#09;v) echo &quot; -- Version $__ScriptVersion&quot;; exit 0   ;;&#10;&#09;&#09;f) file=$OPTARG;;&#10;&#09;&#09;r) rflag=true; echo &quot;Starting Home-Assistant&quot;; x;;&#10;&#09;&#09;s) sflag=true; echo &quot;Stopping Home-Assistant&quot;; y;;&#10;&#09;&#09;*) echo -e &quot;\n  Option does not exist : $OPTARG\n&quot;&#10;&#09;&#09;&#09;usage; exit 1;;&#10;&#09;esac&#10;done&#10;&#10;shift $(($OPTIND-1))&#10;debug &quot;file: $file positional: $*&quot;&#10;&#10;# in case args need to be passed to function, collect first&#10;#$rflag &amp;&amp; x $file&#10;#$sflag &amp;&amp; y $file&#10;&#10;if ! $rflag &amp;&amp; ! $sflag; then&#10;&#09;usage&#10;&#09;exit 1&#10;fi" description="&quot;Getopts for script&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="loop" value="for cmd in &quot;${Cmds[@]}&quot;; do&#10;&#09;echo &quot;$cmd&quot;&#10;done" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="test" value="${1:TestName} () {&#10;&#09;printf &quot;____Running $1\n&quot;&#10;&#09;ref=${2:refVaue}&#10;&#09;got=$(${3:gotValue})&#10;&#09;if [ &quot;$got&quot; == &quot;$ref&quot; ]; then&#10;&#09;&#09;Green &quot;Pass: $got&quot;&#10;&#09;else&#10;&#09;&#09;printf &quot;Expected: %s\n&quot; &quot;$ref&quot;&#10;&#09;&#09;printf &quot;Got: %s\n&quot; &quot;$got&quot;&#10;&#09;&#09;Red &quot;NOK&quot;&#10;&#09;fi&#10;&#09;return 0&#10;}" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="default_variable" value="default=&quot;${1:value}&quot;&#10;${1:vname}=$\{$1:-$default\}" description="" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+  <template name="git-cmd" value="#!/usr/bin/env bash&#10;# based on https://github.com/tj/git-extras/tree/master/helper&#10;#&#10;# reset environment variables that could interfere with normal usage&#10;export GREP_OPTIONS=&#10;# put all utility functions here&#10;&#10;# make a temporary file&#10;git_extra_mktemp() {&#10;&#09;mktemp -t &quot;$(basename &quot;$0&quot;)&quot;.XXXXXXX&#10;}&#10;&#10;git_extra_default_branch() {&#10;&#09;local default_branch&#10;&#09;default_branch=$(git config --get git-extras.default-branch)&#10;&#09;if [ -z &quot;$default_branch&quot; ]; then&#10;&#09;&#09;echo &quot;master&quot;&#10;&#09;else&#10;&#09;&#09;echo &quot;$default_branch&quot;&#10;&#09;fi&#10;}&#10;#&#10;# check whether current directory is inside a git repository&#10;#&#10;&#10;is_git_repo() {&#10;&#09;git rev-parse --show-toplevel &gt; /dev/null 2&gt;&amp;1&#10;&#09;result=$?&#10;&#09;if test $result != 0; then&#10;&#09;&#09;&gt;&amp;2 echo 'Not a git repo!'&#10;&#09;&#09;exit $result&#10;&#09;fi&#10;}&#10;&#10;#&#10;# check whether current directory contains any git commit&#10;#&#10;&#10;has_git_commit() {&#10;&#09;git rev-parse --short HEAD &gt; /dev/null 2&gt;&amp;1&#10;&#09;result=$?&#10;&#09;if test $result != 0; then&#10;&#09;&#09;&gt;&amp;2 echo 'Not git commit found!'&#10;&#09;&#09;exit $result&#10;&#09;fi&#10;}&#10;################################################################################&#10;# main&#10;################################################################################&#10;has_git_commit&#10;is_git_repo&#10;..." description="&quot;template for git command&quot;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="Bash" value="true" />
+      <option name="SHELL_SCRIPT" value="true" />
+    </context>
+  </template>
+</templateSet>

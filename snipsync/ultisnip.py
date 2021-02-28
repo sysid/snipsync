@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 import textwrap
@@ -6,6 +7,7 @@ from typing import List
 
 from snipsync.text import LineIterator, head_tail
 
+_log = logging.getLogger(__name__)
 
 def normalize_file_path(path: str) -> str:
     """Calls normpath and normcase on path"""
