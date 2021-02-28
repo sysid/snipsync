@@ -9,6 +9,7 @@ from snipsync.text import LineIterator, head_tail
 
 _log = logging.getLogger(__name__)
 
+
 def normalize_file_path(path: str) -> str:
     """Calls normpath and normcase on path"""
     return os.path.normcase(os.path.normpath(path))
@@ -44,16 +45,16 @@ class UltiSnipsSnippetDefinition:
     _TABS = re.compile(r"^\t*")
 
     def __init__(
-        self,
-        priority,
-        trigger,
-        value,
-        description,
-        options,
-        globals,
-        location,
-        context,
-        actions,
+            self,
+            priority,
+            trigger,
+            value,
+            description,
+            options,
+            globals,
+            location,
+            context,
+            actions,
     ):
         self._priority = int(priority)
         self._trigger = trigger
@@ -147,7 +148,7 @@ class UltiSnipsSnippetDefinition:
 
 
 def _handle_snippet_or_global(
-    filename, line, lines, python_globals, priority, pre_expand, context
+        filename, line, lines, python_globals, priority, pre_expand, context
 ):
     """Parses the snippet that begins at the current line."""
     start_line_index = lines.line_index
@@ -158,7 +159,7 @@ def _handle_snippet_or_global(
     snip = line.split()[0]
 
     # Get and strip options if they exist
-    remain = line[len(snip) :].strip()
+    remain = line[len(snip):].strip()
     words = remain.split()
 
     if len(words) > 2:

@@ -31,12 +31,15 @@ class TestXmlSnippet:
         assert not self.xml.exists("zzz")
 
     def test_create_xml(self, arr_snip):
-        snip_xml = XmlSnippet.create_xml(arr_snip)
+        snip_xml = XmlSnippet.create_xml(arr_snip, context=('Bash', 'SHELL_SCRIPT'))
+        assert len(snip_xml.findall(".//option[@name='Bash']")) == 1
+        assert len(snip_xml.findall(".//option[@name='SHELL_SCRIPT']")) == 1
         ET.indent(snip_xml)  # pretty printing
         ET.dump(snip_xml)
+        # assert snips[0].attrib.get('value') == 'xxx'
 
     def test_insert_snip(self, arr_snip):
-        snip_xml = self.xml.create_xml(arr_snip)
+        snip_xml = self.xml.create_xml(arr_snip, context=('Bash', 'SHELL_SCRIPT'))
         self.xml.insert(snip_xml)
 
         assert self.xml.exists("arr")
@@ -44,7 +47,7 @@ class TestXmlSnippet:
         ET.dump(self.xml.et)
 
     def test_upsert_snip_new(self, arr_snip):
-        self.xml.upsert(arr_snip)
+        self.xml.upsert(arr_snip, context=('Bash', 'SHELL_SCRIPT'))
 
         assert self.xml.exists("arr")
         ET.indent(self.xml.et)
@@ -58,7 +61,7 @@ class TestXmlSnippet:
 
         # when value of snippet changes
         arr_snip._value = 'xxx'
-        self.xml.upsert(arr_snip)
+        self.xml.upsert(arr_snip, context=('Bash', 'SHELL_SCRIPT'))
 
         # then: snippet has been updated
         snips = self.xml.et.findall("template[@name='xxx']")

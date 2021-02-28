@@ -1,22 +1,10 @@
-from snipsync.lexer import tokenize, EscapeCharToken, VisualToken, TransformationToken, ChoicesToken, TabStopToken, \
-    MirrorToken, PythonCodeToken, VimLCodeToken, ShellCodeToken
+from snipsync.lexer import tokenize
 from snipsync.position import Position
+from snipsync.settings import ALLOWED_TOKENS
 from snipsync.ultisnip import UltiSnipsFileSource, UltiSnipsSnippetDefinition
 
+
 # CHECK = re.compile(r"^\${\d+[:}]")
-
-__ALLOWED_TOKENS = [
-    EscapeCharToken,
-    VisualToken,
-    TransformationToken,
-    ChoicesToken,
-    TabStopToken,
-    MirrorToken,
-    PythonCodeToken,
-    VimLCodeToken,
-    ShellCodeToken,
-]
-
 
 # read snippet file
 def test_ultisnips_file_source(ultisnips, ultisnips_file):
@@ -32,7 +20,7 @@ def test_tokenize():
     text = """let ${1} = require('${0:$1}');"""
     offset = Position(line=0, col=0)
     indent = 0
-    t1, t2, t3 = list(tokenize(text, indent, offset, __ALLOWED_TOKENS))
+    t1, t2, t3 = list(tokenize(text, indent, offset, ALLOWED_TOKENS))
     _ = None
     # assert t2.initial_text == '$1'
 
@@ -42,7 +30,7 @@ def test_tokenize2():
     offset = Position(line=0, col=0)
     indent = 0
 
-    t = list(tokenize(text, indent, offset, __ALLOWED_TOKENS))
+    t = list(tokenize(text, indent, offset, ALLOWED_TOKENS))
     assert t[0].number == 1
     assert t[0].initial_text == 'arr'
     assert t[4].number == 0

@@ -1,0 +1,520 @@
+global !p
+# Echo helper code
+def echo_vals(t, placeholder="%s"):
+   return ', '.join(["%s: %s" % (a.strip(), placeholder) for a in
+      t[1].split(',') if len(a.strip())])
+endglobal
+
+### Funcs
+snippet echo "Python 3 echo" b
+print("${2}`!p snip.rv = echo_vals(t, '{}')`".format(${1}))
+endsnippet
+
+snippet twfuncname
+inspect.currentframe().f_code.co_name
+endsnippet
+
+snippet twprint
+print(f"\n{'${1:msg}':*^80}")
+endsnippet
+
+snippet print_center
+print('-' * 80)
+print('{:^80}'.format("${1:title}"))
+print('-' * 80)
+endsnippet
+
+snippet decorator
+from functools import wraps
+
+
+def get_decorator(*args):
+	def decorator(func):
+		""" decorated fun points to the wrapper """
+		@wraps(func)
+		def wrapper(*a, **kw):
+			# Do something right before every call to func
+			print(f'decorator_args: {args}')
+			print(f'decorated_args: {a}, {kw}')
+			return func(*a, **kw)
+			# Do something right after every call to func
+		return wrapper
+	return decorator
+
+
+@get_decorator("bar")
+def foo(*a, **kw):
+	# do something
+	pass
+
+
+if __name__ == "__main__":
+	foo("a", x="b")
+endsnippet
+
+### Base, Import
+snippet twimport
+sys.path.insert(0, "..")  # TODO: remove
+endsnippet
+
+snippet assert
+assert ${1:bool expr}, "${2:msg}"
+endsnippet
+
+snippet modelinePy
+# vim: ts=4 sts=4 sw=4 fdl=0
+endsnippet
+
+snippet twBase
+from twBase import *
+endsnippet
+
+snippet twimage
+from PIL import Image
+img = Image.open(${1:file})
+endsnippet
+
+snippet try try systemExit
+try
+except IOError, e:
+raise SystemExit("Error: %s" % str(e))
+endsnippet
+
+snippet embed
+from IPython import embed
+embed()
+endsnippet
+
+snippet fore
+for i, v in enumerate(${1:string}):
+	pass
+endsnippet
+
+snippet forkv
+for k, v in ${1:string}.items():
+	pass
+endsnippet
+
+snippet timing
+start = time.time()
+print("${1:action} took {} seconds.".format(time.time() - start))
+endsnippet
+
+snippet twenvironment
+try:
+	data_path = os.environ['${1:EnvVar}']
+except KeyError:
+	print("${1} is not set.")
+	sys.exit(1)
+endsnippet
+
+snippet twNone
+${1:var} = xxx if $1 is None else $1
+endsnippet
+
+### IO
+snippet twlog
+import logging
+_LOGGER = logging.getLogger(__name__)
+handler = logging.StreamHandler(sys.stdout)
+handler.setFormatter(logging.Formatter(
+	'%(asctime)-15s %(levelname)s %(name)s %(funcName)s:%(lineno)d %(message)s',
+	datefmt='%Y-%m-%d %H:%M:%S'))
+_LOGGER.addHandler(handler)
+_LOGGER.setLevel(logging.DEBUG)
+endsnippet
+
+snippet twlogbasic
+import logging
+_LOGGER = logging.getLogger(__name__)
+log_fmt = r'%(asctime)-15s %(levelname)s %(name)s %(funcName)s:%(lineno)d %(message)s'
+datefmt='%Y-%m-%d %H:%M:%S'
+logging.basicConfig(format=log_fmt, level=logging.DEBUG, datefmt=datefmt)
+endsnippet
+
+
+snippet pprint
+from pprint import pprint  # NOQA
+endsnippet
+
+snippet structlog
+import structlog
+# structured logging: debug, info, warn err, critical
+# log.debug("debug logg", stack_info=True)
+logging.basicConfig(format="", stream=sys.stderr, level=logging.DEBUG)
+logcfg(sys.stderr, logging.DEBUG, RenderEnum.console)
+log = structlog.get_logger(__name__)
+endsnippet
+
+snippet "
+"{0!s}".format(${1:string})
+endsnippet
+
+snippet dbg
+import ipdb; ipdb.set_trace()  # NOQA XXX BREAKPOINT
+endsnippet
+
+snippet dbgp
+print("D: {0}: ${1:str}: {1}".format(logme(), ${2:var}))
+endsnippet
+
+snippet twplot
+import numpy as np
+import import matplotlib.pyplot as plt
+plt.plot(np.linspace(1, 4, 10), np.logspace(1, 4, 10))
+plt.show()
+endsnippet
+
+### File IO
+snippet touch
+open(file, 'a').close()
+endsnippet
+
+snippet confload
+# load config from json if no dict
+if isinstance(conf, str):
+	conf = json.load(open(conf, 'rb'))
+endsnippet
+
+snippet copyf
+import shutil
+shutil.copyfile(${1:fn}, ${2:path} + $1)
+endsnippet
+
+snippet rmdir
+import shutil
+shutil.rmtree(${1:fn})
+endsnippet
+
+snippet twmake_dir
+os.makedirs($1, exist_ok=True)
+endsnippet
+
+snippet twtest_file
+if not os.path.exists(${1:path}):
+	log.error("-E- model does not exist.", path=$1)
+endsnippet
+
+snippet walk
+for folderName, subfolders, filenames in os.walk(${1:path}):
+endsnippet
+
+snippet twwrite_text
+with open(${1:path}, 'w') as textfile:
+	print(${2:string}, file=textfile)
+endsnippet
+
+snippet twread_text
+with open(${1:path}, 'r') as textfile:
+	text = (textfile.read())
+endsnippet
+
+snippet twjson_save
+with open(${1:fn}, 'w') as f:
+	json.dump(${2:data}, f)
+endsnippet
+
+snippet twjson_read
+with open(${1:fn}, 'r') as f:
+	${2:data} = json.load(f)
+endsnippet
+
+snippet twpickle_save_bz2
+import pickle, gzip, bz2
+with bz2.open(${1:fn}, 'wb') as f:
+	pickle.dump(${2:data}, f)
+endsnippet
+
+snippet twpickle_read_bz2
+import pickle, gzip, bz2
+with bz2.open(${1:fn}, 'rb') as f:
+	${2:data} = pickle.load(f)
+endsnippet
+
+snippet twpickle_save
+with open(${1:fn}, 'wb') as f:
+	pickle.dump(${2:data}, f)
+endsnippet
+
+snippet twpickle_read
+with open(${1:fn}, 'rb') as f:
+	${2:data} = pickle.load(f)
+endsnippet
+
+snippet twh5_save
+import h5py
+if os.path.exists(h5_file):
+	os.remove(h5_file)
+
+with h5py.File(h5_file, "a") as f:
+#f = h5py.File(h5_file)
+	f['y'] = y
+#f.close()
+log.info("Saved", data=h5_file)
+endsnippet
+
+snippet twh5_read
+import h5py
+assert os.path.exists(h5data_fn), "{} does not exist".format(h5data_fn)
+with h5py.File(h5data_fn, "r") as f:
+#f = h5py.File(h5data_fn)
+	y = f['y'].value
+#f.close()
+endsnippet
+
+### Scripts
+snippet twscript
+@click.group()
+@click.option('--debug/--no-debug', default=False)
+@click.pass_context
+def cli(ctx, debug):
+	# ensure that ctx.obj exists and is a dict (in case `cli()` is called
+	# by means other than the `if` block below
+	ctx.ensure_object(dict)
+	ctx.obj['DEBUG'] = debug
+
+
+@click.command()
+@click.pass_context
+def sync(ctx):
+	click.echo('Debug is %s' % (ctx.obj['DEBUG'] and 'on' or 'off'))
+
+click.add_command(all)
+
+
+if __name__ == '__main__':
+	cli(obj={})
+endsnippet
+
+snippet main_script
+import fire
+import subprocess
+
+def run(s):
+	subprocess.run(s, check=True, shell=True)
+
+if __name__ == "__main__":
+	fire.Fire()
+endsnippet
+
+snippet main_fire
+import fire
+
+if __name__ == "__main__":
+	fire.Fire()
+endsnippet
+
+snippet main
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""module docstring"""
+
+# imports
+import sys, os, argparse, logging  # NOQA
+from pprint import pprint
+from twbase import structlog, logcfg, RenderEnum, twStart, twEnd, read_yaml, Struct
+
+
+def process_command_line(argv):
+	# create the top-level parser
+	parser = argparse.ArgumentParser(description="")
+	parser.add_argument("-d", "--debug", help="print debug messages", action="store_true")
+	parser.add_argument("-c", "--config", help="load config: absolute path", type=str, default=None)
+	args = parser.parse_args(argv)
+	return args
+
+
+def main(argv=None):
+	args = process_command_line(argv)
+	if args.debug:
+		logcfg(sys.stderr, logging.DEBUG, RenderEnum.console)
+	else:
+		logcfg(sys.stderr, logging.INFO, RenderEnum.console)
+	# logging.getLogger().setLevel(logging.INFO)
+	log = structlog.get_logger(__name__)
+	twStart()
+
+	log.debug("Loading yaml", cfg=args.config)
+	config = read_yaml(args.config)
+	config = Struct({**config, **vars(args)})  # dict not working
+	pprint(config)
+
+	twEnd()
+	return 0  # success
+
+
+if __name__ == '__main__':
+	sys.exit(main(sys.argv[1:]))
+endsnippet
+
+snippet twargparse
+def process_command_line(argv):
+	#args = process_command_line(argv)
+	parser = argparse.ArgumentParser(description="xx")
+
+	parser.add_argument("-s", "--sample", help="xx", action="store_true")
+	parser.add_argument("-l", "--load", help="xx", type=str, default=None)
+
+	args = parser.parse_args(argv)
+	return args
+endsnippet
+
+snippet config
+class Config(object):
+
+	"""
+	def process_command_line(argv):
+		parser = argparse.ArgumentParser(description="programpurpose")
+		parser.add_argument("-s", "--sample", help="use only sample subset", action="store_true")
+		parser.add_argument("-b", "--batch_size", help="batch size", type=int)
+		parser.add_argument("-c", "--load_config", help="load config: absolute path", type=str, default=None)
+		args = parser.parse_args(argv)
+		return args
+	args = process_command_line(argv)
+	P = Config()(args)
+	"""
+
+	def __init__(self):
+		pass
+
+	def __call__(self, args):
+		if args.load_config is not None:
+			return self.load_config(args.load_config)
+		else:
+			return self.get_parameters(args)
+
+	def get_parameters(self, args):
+		'''
+		derived parameters are defined in params, but with value None. Will be set after instantiation of dict
+		args: will be set ONLY by command line args
+		args can be overwritten by cmdline args, but ther must be no default value in argsparse
+		'''
+		params = {
+			"DATA": {
+				"BASE_DIR": "./data",
+				"DATA_FN": './data/Lastprognose/2015.csv',
+				"isSample": False,
+			},
+			"MODEL": {
+				"SUFFIX": "xxx",
+				"NAME": None,
+				"CLASS": "RNN1",
+			},
+			"TRAINING": {},
+			"OUTPUT": {
+				"BASE_DIR": "./data/out",
+				"MODEL_DIR": None,
+			}
+		}
+
+		P = Struct(params)
+		P.MODEL.NAME = "{}.{}".format(P.MODEL.CLASS, P.MODEL.SUFFIX)  # build name
+		P.OUTPUT.MODEL_DIR = os.path.join(P.OUTPUT.BASE_DIR, P.MODEL.NAME)  # build output dir
+
+		### Overwrite conf with cmdline params
+		# for overwriting must not have default in argsparse, otherwise default will overwrite
+		# adding parameters only works when dict struct is already created
+		if hasattr(args, 'epoch'):
+			if args.epoch is not None:
+				P.TRAINING.EPOCHS = args.epoch
+
+		if hasattr(args, 'batch_size'):
+			if args.batch_size is not None:
+				P.TRAINING.BATCH_SIZE = args.batch_size
+
+		if args.sample:
+			P.DATA.isSample = args.sample
+
+		os.makedirs(P.OUTPUT.MODEL_DIR, exist_ok=True)
+		with open(os.path.join(P.OUTPUT.MODEL_DIR, 'config.json'), 'w') as f:
+			json.dump(P, f, default=twSerialize, indent=4)
+
+		return P
+
+
+	def load_config(self, path):
+		assert os.path.exists(path), "{} does not exist".format(path)
+		log.info("Loading config", c=path)
+		with open(path, 'r') as f:
+			return Struct(json.load(f))
+endsnippet
+
+### Class
+snippet twclass
+class MyClass(object):
+	"""Docstring for MyClass. """
+
+	@classmethod  # classmethod always gets class as parameter
+	def get_clsname(cls):
+		return cls.__name__
+
+	def __init__(self):
+		super().__init__()
+
+	def __repr__(self):
+		return "{self.__class__.__name__}"  # subclassing!
+
+	def save(self, filename: Union[str, PathLike], prop: str = None):
+		with open(filename, 'wb') as f:
+			if prop is None:
+				_log.info(f"Saving {self.__class__.__name__} to {f}.")
+				pickle.dump(self, f)
+				return
+			if prop in self.__dict__.keys():
+				_log.info(f"Saving {prop}.")
+				data = getattr(self, prop)
+				pickle.dump(data, f)
+			else:
+				_log.warning(f"{prop} does not exist on {self.__class__.__name__}.")
+
+	@staticmethod
+	def load(filename: PathLike) -> 'Config':
+		_log.info(f'Loading instance: {filename}')
+		with open(filename, 'rb') as f:
+			return pickle.load(f)
+endsnippet
+
+snippet twtest
+import unittest
+from ${1:module} import ${1}
+
+'''
+python xxx.test.py -v
+python xxx.test.py -v TestReverseDiff.test_combine_XY
+python -m unittest tests.test_schedule.TestSchedule.test__check_periodicity -v
+'''
+
+class Test_${2:testclass}(unittest.TestCase):
+	'''
+	python -m unittest twbase.test.test_Struct.Test_${2:testclass} -v
+	'''
+
+	def setUp(self):
+		'''will be called for every test'''
+		if ('-v' in sys.argv):
+			_LOGGER.setLevel(logging.DEBUG)
+
+	def test_get_sin(self):
+		self.assertEqual(4, 4)
+
+	def test__check_periodicity(self):
+		schedule = [1, 2, 3]
+		with self.assertRaises(AssertionError):
+			s = Schedule(schedule)
+
+
+if __name__ == '__main__':
+	unittest.main()
+endsnippet
+
+snippet twtestclass
+class Test_${1:name}(unittest.TestCase):
+
+	def setUp(self):
+		'''will be called for every test'''
+		self.fixture = 'xxx'
+
+	def test_xxx(self):
+		self.assertEqual(bla(), 10)
+endsnippet
