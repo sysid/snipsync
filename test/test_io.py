@@ -1,7 +1,11 @@
+import re
 import xml.etree.ElementTree as ET
 
 import pytest
 
+from snipsync.lexer import tokenize
+from snipsync.position import Position
+from snipsync.settings import ALLOWED_TOKENS
 from snipsync.xml_snippet import read_ultisnips, XmlSnippet
 
 

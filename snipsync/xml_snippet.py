@@ -2,7 +2,7 @@ import logging
 import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Union, Iterable
+from typing import Union, Iterable, Dict
 
 from snipsync.lexer import tokenize, TabStopToken
 from snipsync.position import Position
@@ -10,7 +10,6 @@ from snipsync.settings import ALLOWED_TOKENS
 from snipsync.ultisnip import UltiSnipsSnippetDefinition, UltiSnipsFileSource
 
 _log = logging.getLogger(__name__)
-
 
 def read_ultisnips(file: Path) -> str:
     with open(file, "r", encoding="utf-8") as f:
@@ -33,36 +32,24 @@ class XmlSnippet:
 
     @staticmethod
     def create_xml(snip: UltiSnipsSnippetDefinition, context: Iterable[str]) -> ET.Element:
-        offset = Position(line=0, col=0)
-        _INDENT = re.compile(r"^[ \t]*")
         text = snip._value
-        indent = _INDENT.match("").group(0)
-        tokens = list(tokenize(text, indent, offset, ALLOWED_TOKENS))
 
-        # create the parameters
-        intelij_params = dict()
-        for token in tokens:
-            if not isinstance(token, TabStopToken):
-                continue
-            param_name = f"param{token.number}"
-            intelij_params[param_name] = dict(
-                name=param_name,
-                expression="",
-                defaultValue=token.initial_text,
-                alwaysStopAt="true",
-            )
-            # variable = ET.SubElement(template, 'variable', attrib=var_attr)
+        intelij_vars = XmlSnippet.create_variables(text)
 
+        _NUMBER = re.compile(r"\${(\d+).*?}")
         # mo = re.search("\\${\\d+[:}].*?}", text)
-        _TABSTOP = re.compile(r"\${\d+[:}].*?}")
+        _TABSTOP = re.compile(r"\${\d+[:]?.*?}")
         mo = _TABSTOP.search(text)
         n = 0
         while mo:
-            print(f"{n}: {mo}")
-            # text = re.sub("\\${\\d+[:}].*?}", lambda mo: f"{n}.....", text)
-            text = mo.string[: mo.start()] + f"...{n}..." + mo.string[mo.end():]
             match = mo.group()
-            print(f"match: {match}")
+            token_number = _NUMBER.findall(match)[0]
+            _log.debug(f"{n}: {mo}: match: {match}, token_number: {token_number}")
+
+            var_attrs = intelij_vars.get(token_number)
+            # if var_attrs is not None:
+            text = mo.string[: mo.start()] + f"...{n}..." + mo.string[mo.end():]
+                # text = mo.string[: mo.start()] + f"{var_attrs['name']}" + mo.string[mo.end():]
 
             print(text)
             mo = _TABSTOP.search(text)
@@ -84,6 +71,27 @@ class XmlSnippet:
                 context_tag, "option", attrib=dict(name=c, value="true")
             )
         return template
+
+    @staticmethod
+    def create_variables(text: str) -> Dict:
+        offset = Position(line=0, col=0)
+        _INDENT = re.compile(r"^[ \t]*")
+        indent = _INDENT.match("").group(0)
+        tokens = list(tokenize(text, indent, offset, ALLOWED_TOKENS))
+        # create the parameters
+        intelij_params = dict()
+        for token in tokens:
+            if not isinstance(token, TabStopToken):
+                continue
+            param_name = f"param{token.number}"
+            intelij_params[token.number] = dict(
+                name=param_name,
+                expression="",
+                defaultValue=token.initial_text,
+                alwaysStopAt="true",
+            )
+            # variable = ET.SubElement(template, 'variable', attrib=var_attr)
+        return intelij_params
 
     def insert(self, snip: ET.Element):
         root = self.et.getroot()
