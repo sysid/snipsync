@@ -5,7 +5,7 @@ from typing import List
 
 import typer
 
-from snipsync.io import read_ultisnips, XmlSnippet
+from snipsync.xml_snippet import read_ultisnips, XmlSnippet
 from snipsync.ultisnip import UltiSnipsFileSource
 
 _log = logging.getLogger(__name__)

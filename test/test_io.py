@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 
 import pytest
 
-from snipsync.io import read_ultisnips, XmlSnippet
+from snipsync.xml_snippet import read_ultisnips, XmlSnippet
 
 
 def test_read_ultisnips(ultisnips_file):
