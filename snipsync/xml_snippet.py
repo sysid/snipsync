@@ -11,6 +11,7 @@ from snipsync.ultisnip import UltiSnipsSnippetDefinition, UltiSnipsFileSource
 
 _log = logging.getLogger(__name__)
 
+
 def read_ultisnips(file: Path) -> str:
     with open(file, "r", encoding="utf-8") as f:
         return f.read()
@@ -36,34 +37,20 @@ class XmlSnippet:
 
         intelij_vars = XmlSnippet.create_variables(text)
 
-        _NUMBER = re.compile(r"\${(\d+).*?}")
-        # mo = re.search("\\${\\d+[:}].*?}", text)
-        _TABSTOP = re.compile(r"\${\d+[:]?.*?}")
-        mo = _TABSTOP.search(text)
-        n = 0
-        while mo:
-            match = mo.group()
-            token_number = _NUMBER.findall(match)[0]
-            _log.debug(f"{n}: {mo}: match: {match}, token_number: {token_number}")
-
-            var_attrs = intelij_vars.get(token_number)
-            # if var_attrs is not None:
-            text = mo.string[: mo.start()] + f"...{n}..." + mo.string[mo.end():]
-                # text = mo.string[: mo.start()] + f"{var_attrs['name']}" + mo.string[mo.end():]
-
-            print(text)
-            mo = _TABSTOP.search(text)
-            n += 1
+        xml_text = XmlSnippet.replace_tabstop(intelij_vars, text)
+        xml_text = XmlSnippet.replace_mirror(intelij_vars, xml_text)
 
         snip_attr = dict(
             name=snip.trigger,
-            value=snip._value,
+            value=xml_text,
             description=snip._description,
             toReformat="true",
             toShortenFQNames="true",
         )
         template = ET.Element("template", attrib=snip_attr)
 
+        for _, var_attr in intelij_vars.items():
+            variable = ET.SubElement(template, 'variable', attrib=var_attr)
 
         context_tag = ET.SubElement(template, "context")
         for c in context:
@@ -71,6 +58,54 @@ class XmlSnippet:
                 context_tag, "option", attrib=dict(name=c, value="true")
             )
         return template
+
+    @staticmethod
+    def replace_mirror(intelij_vars, text):
+        _MIRROR = re.compile(r"\$(\d+)")
+        _NUMBER = re.compile(r"\$(\d+)")
+
+        mo = _MIRROR.search(text)
+        n = 0
+        while mo:
+            match = mo.group()
+            token_number = int(_NUMBER.findall(match)[0])
+            _log.debug(f"{n}: {mo}: match: {match}, token_number: {token_number}")
+
+            var_attrs = intelij_vars.get(token_number)
+            if var_attrs is not None:
+                text = mo.string[: mo.start()] + f"${var_attrs['name']}$" + mo.string[mo.end():]
+            else:
+                # this is required to ensure finite loop (search pattern must be removed from text)
+                text = mo.string[: mo.start()] + f"_parameter_to_change_" + mo.string[mo.end():]
+
+            mo = _MIRROR.search(text)
+            n += 1
+        return text
+
+    @staticmethod
+    def replace_tabstop(intelij_vars, text):
+        # mo = re.search("\\${\\d+[:}].*?}", text)
+        _TABSTOP = re.compile(r"\${\d+[:]?.*?}")
+        _NUMBER = re.compile(r"\${(\d+).*?}")
+        _MIRROR = re.compile(r"\$(\d+)")
+
+        mo = _TABSTOP.search(text)
+        n = 0
+        while mo:
+            match = mo.group()
+            token_number = int(_NUMBER.findall(match)[0])
+            _log.debug(f"{n}: {mo}: match: {match}, token_number: {token_number}")
+
+            var_attrs = intelij_vars.get(token_number)
+            if var_attrs is not None:
+                text = mo.string[: mo.start()] + f"${var_attrs['name']}$" + mo.string[mo.end():]
+            else:
+                # this is required to ensure finite loop (search pattern must be removed from text)
+                text = mo.string[: mo.start()] + f"_parameter_to_change_" + mo.string[mo.end():]
+
+            mo = _TABSTOP.search(text)
+            n += 1
+        return text
 
     @staticmethod
     def create_variables(text: str) -> Dict:

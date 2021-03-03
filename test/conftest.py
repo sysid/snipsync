@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from typing import Dict
 
 import pytest
 
@@ -70,3 +71,70 @@ def arr_snip(ultisnips) -> UltiSnipsSnippetDefinition:
     _ = next(data)[1][0]
     _ = next(data)[1][0]
     return next(data)[1][0]
+
+
+@pytest.fixture()
+def intelij_vars() -> Dict:
+    return {
+        0: dict(
+            name='param0',
+            expression="",
+            defaultValue='default0',
+            alwaysStopAt="true",
+        ),
+        1: dict(
+            name='param1',
+            expression="",
+            defaultValue='default1',
+            alwaysStopAt="true",
+        ),
+        2: dict(
+            name='param2',
+            expression="",
+            defaultValue='default2',
+            alwaysStopAt="true",
+        ),
+    }
+
+# Attention: TABS must be explicit
+@pytest.fixture()
+def snippets():
+    return (
+        """\
+            snippet arr "array template"
+            ${1:arr}=(
+            \t"foo"
+            \t"bar"
+            )
+            echo "Array: ${${0:$1}[@]}"
+            echo "Index: ${!${0:$1}[@]}"
+            echo "Size: ${#${0:$1}[@]}"
+            for el in "${${0:$1}[@]}"; do
+            \techo $el
+            done
+            endsnippet
+        """,
+        """\
+            snippet req "require a module" b
+            let ${1} = require('${0:$1}');
+            endsnippet
+        """,
+        """\
+            snippet read
+            read -p "Enter: " ${1:input}
+            echo "-M- \\$$1"
+            endsnippet
+        """,
+        """\
+            snippet if "if ... then (if)"
+            if ${2:[[ ${1:condition} ]]}; then
+                    ${0:#statements}
+            fi
+            endsnippet
+    """,
+    )
+
+
+# print(dedent(snippets[0]))
+# print(snippets[0])
+

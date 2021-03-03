@@ -1,14 +1,12 @@
-import re
+from collections import defaultdict
+from textwrap import dedent
 
 import pytest
 
-from snipsync.lexer import tokenize, TabStopToken, MirrorToken, EndOfTextToken
-from snipsync.position import Position
-from snipsync.settings import ALLOWED_TOKENS
-from snipsync.ultisnip import UltiSnipsFileSource, UltiSnipsSnippetDefinition
+from snipsync.text import LineIterator
+from snipsync.ultisnip import UltiSnipsFileSource, UltiSnipsSnippetDefinition, _handle_snippet_or_global
 
 
-# read snippet file
 def test_ultisnips_file_source(ultisnips, ultisnips_file):
     source = UltiSnipsFileSource()
     data = source.parse_snippet_file(ultisnips, ultisnips_file)
@@ -18,73 +16,28 @@ def test_ultisnips_file_source(ultisnips, ultisnips_file):
     _ = None
 
 
-def test_tokenize():
-    text = """let ${1} = require('${0:$1}');"""
-    offset = Position(line=0, col=0)
-    _INDENT = re.compile(r"^[ \t]*")
-    indent = _INDENT.match("").group(0)
-    t1, t2, t3 = list(tokenize(text, indent, offset, ALLOWED_TOKENS))
-    assert isinstance(t1, TabStopToken)
-    assert isinstance(t2, TabStopToken)
-    assert isinstance(t3, EndOfTextToken)
-    assert t2.initial_text == '$1'
+def test_create_snippet_definition_object(arr_snip_value, snippets):
+    # given
+    python_globals = defaultdict(list)
+    data = dedent(snippets[0])
+    lines = LineIterator(data)
+    line = next(lines)
+    current_priority = 0
+    actions = {}
+    context = None
 
+    # when
+    snippet, defintion = _handle_snippet_or_global(
+        filename='test_filename',
+        line=line,
+        lines=lines,
+        python_globals=python_globals,
+        priority=current_priority,
+        pre_expand=actions,
+        context=context,
+    )
 
-def test_tokenize2():
-    text = """${1}=(\n\t"foo"\n\t"bar"\n)\necho "Array: ${$1[@]}" """
-    offset = Position(line=0, col=0)
-    _INDENT = re.compile(r"^[ \t]*")
-    indent = _INDENT.match("").group(0)
-    t = list(tokenize(text, indent, offset, ALLOWED_TOKENS))
-    assert isinstance(t[0], TabStopToken)
-    assert isinstance(t[1], MirrorToken)
-    assert isinstance(t[2], EndOfTextToken)
+    # then
     _ = None
-
-
-def test_tokenize3():
-    text = '${1:arr}=(\n\t"foo"\n\t"bar"\n)\necho "Array: ${${0:$1}[@]}"\necho "Index: ${!${0:$1}[@]}"\necho "Size: ${#${0:$1}[@]}"\nfor el in "${${0:$1}[@]}"; do\n\techo $el\ndone'
-    offset = Position(line=0, col=0)
-    _INDENT = re.compile(r"^[ \t]*")
-    indent = _INDENT.match("").group(0)
-
-    t = list(tokenize(text, indent, offset, ALLOWED_TOKENS))
-    assert t[0].number == 1
-    assert t[0].initial_text == 'arr'
-    assert t[4].number == 0
-    assert t[4].initial_text == '$1'
-    _ = None
-
-
-@pytest.mark.parametrize(("input", "output"), [
-    (
-            """${1:arr}=(\n\t"foo"\n\t"bar"\n)\necho "Array: ${${0:$1}[@]}"\necho "Index: ${!${0:$1}[@]}"\necho "Size: ${#${0:$1}[@]}"\nfor el in "${${0:$1}[@]}"; do\n\techo $el\ndone""",
-            ['${1:arr}', '${0:$1}', '${0:$1}', '${0:$1}', '${0:$1}']
-    ),
-    (
-            """$1=(\n\t"foo"\n\t"bar"\n)\necho "Array: ${$1[@]}" """,
-            []
-    ),
-    (
-            """${1}=(\n\t"foo"\n\t"bar"\n)\necho "Array: ${$1[@]}" """,
-            ['${1}']
-    ),
-])
-def test_tabstop(input, output):
-    # _TABSTOP = re.compile(r"\${\d+[:]?.*?(?<!})}")
-    _TABSTOP = re.compile(r"\${\d+[:]?.*?}")
-    print(_TABSTOP.findall(input))
-    assert _TABSTOP.findall(input) == output
-
-
-@pytest.mark.parametrize(("input", "output"), [
-    ('${1:arr}', ['1'],),
-    ('${0:$1}', ['0'],),
-    ('${111:$1}', ['111'],),
-    ('', [],),
-    ('${1}', ['1'],),
-])
-def test_re(input, output):
-    _NUMBER = re.compile(r"\${(\d+).*?}")
-    print(_NUMBER.findall(input))
-    assert _NUMBER.findall(input) == output
+    assert snippet == 'snippet'
+    assert defintion[0]._value == arr_snip_value

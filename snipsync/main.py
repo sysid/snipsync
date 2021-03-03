@@ -11,10 +11,6 @@ from snipsync.ultisnip import UltiSnipsFileSource
 _log = logging.getLogger(__name__)
 app = typer.Typer()
 
-TEMPLATES = "/Users/Q187392/Library/Application Support/JetBrains/PyCharm2020.3/jba_config/templates"
-ULTISNIPS = "/Users/Q187392/dev/binx/vim-config/UltiSnips"
-
-
 @app.command()
 def sync_to_intelij(
         verbose: bool = typer.Option(False, '--verbose', '-v', help="verbose"),
@@ -36,9 +32,11 @@ def sync_to_intelij(
         ET.indent(xml_snippets.et)
         ET.dump(xml_snippets.et)
 
-    p = Path(TEMPLATES) / 'user.xml'
+    # p = Path(TEMPLATES) / 'user.xml'  # TODO: save copy and bkp original
+    p = xmlsnip_file
     if save:
         typer.secho(f"-M- Saving to {p}", fg='green')
+        ET.indent(xml_snippets.et)
         xml_snippets.et.write(p)
     else:
         typer.secho(f"-W- Not saved to {p}", fg='cyan')
