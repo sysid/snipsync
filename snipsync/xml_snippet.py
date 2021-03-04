@@ -80,6 +80,7 @@ class XmlSnippet:
 
             mo = _MIRROR.search(text)
             n += 1
+        text = text.replace(r'\$', '$$')  # adjust dollar escaping to intelij
         return text
 
     @staticmethod
@@ -105,6 +106,7 @@ class XmlSnippet:
 
             mo = _TABSTOP.search(text)
             n += 1
+        text = text.replace(r'\$', '$$')  # adjust dollar escaping to intelij
         return text
 
     @staticmethod

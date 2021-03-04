@@ -87,11 +87,18 @@ class TestReplaceTabstop:
         xml_text = XmlSnippet.replace_tabstop(intelij_vars, arr_snip)
         _ = None
         print(xml_text)
-        assert 'echo "-M- \$$param1$' in xml_text
+        assert 'Enter: " $param1$' in xml_text
 
     def test_replace_mirror_read_snip(self, intelij_vars, snippets):
         arr_snip = snippets[2]
         xml_text = XmlSnippet.replace_mirror(intelij_vars, arr_snip)
         _ = None
         print(xml_text)
-        assert 'echo "-M- \\$$param1$' in xml_text
+        assert 'echo "-M- $$$param1$' in xml_text
+
+    def test_replace_tabstop_zet(self, intelij_vars, snippets):
+        arr_snip = snippets[4]
+        xml_text = XmlSnippet.replace_tabstop(intelij_vars, arr_snip)
+        _ = None
+        print(xml_text)
+        assert '$$$param1$' in xml_text

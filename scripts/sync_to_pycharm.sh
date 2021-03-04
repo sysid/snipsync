@@ -37,7 +37,8 @@ pushd "$PROJ_DIR" || exit 1
 
 init() {
   Green "-M- Initializing user.xml"
-  cp -v "/Users/Q187392/dev/binx/intelij/user.xml_20210228_205741" "$TEMPLATES/user_init.xml"
+#  cp -v "/Users/Q187392/dev/binx/intelij/user.xml_20210228_205741" "$TEMPLATES/user.xml"
+  cp -v "/Users/Q187392/dev/binx/intelij/user_init.xml" "$TEMPLATES/user.xml"
 }
 
 execute() {

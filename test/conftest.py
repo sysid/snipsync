@@ -96,6 +96,7 @@ def intelij_vars() -> Dict:
         ),
     }
 
+
 # Attention: TABS must be explicit
 @pytest.fixture()
 def snippets():
@@ -131,10 +132,14 @@ def snippets():
                     ${0:#statements}
             fi
             endsnippet
-    """,
+        """,
+        """\
+            snippet -z
+            # Assert there is at least one tag provided
+            test -z "\$${1:var}" && echo "-E- tag required." 1>&2 && exit 1
+            endsnippet
+        """
     )
-
 
 # print(dedent(snippets[0]))
 # print(snippets[0])
-

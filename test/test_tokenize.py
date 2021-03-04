@@ -58,6 +58,10 @@ def test_tokenize3():
             """${1}=(\n\t"foo"\n\t"bar"\n)\necho "Array: ${$1[@]}" """,
             ['${1}']
     ),
+    (
+            """test -z "\$${1:var}" & & echo "-E- tag required." 1 > & 2 & & exit 1""",
+            ['${1:var}']
+    ),
 ])
 def test_tabstop(input, output):
     # _TABSTOP = re.compile(r"\${\d+[:]?.*?(?<!})}")
