@@ -6,7 +6,7 @@ set +ex
 source ~/dev/binx/profile/sane_bash.sh
 
 TWBASH_DEBUG=true
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 START_TIME=$SECONDS
 
 pushd() {
@@ -17,7 +17,6 @@ popd() {
   command popd >/dev/null
 }
 
-
 PROJ_DIR="/Users/Q187392/dev/py/snipsync"
 TEMPLATES="/Users/Q187392/Library/Application Support/JetBrains/PyCharm2020.3/jba_config/templates"
 ULTISNIPS="/Users/Q187392/dev/binx/vim-config/UltiSnips"
@@ -26,28 +25,30 @@ PYTHON="/Users/Q187392/.local/share/virtualenvs/snipsync-AQxb-dHp/bin/python"
 FORCE="-s"
 #VERBOSE="-v"
 
-pgrep -lf pycharm > /dev/null
-if [ $? -eq 0 ]; then
+check-intelij() {
+  pgrep -lf pycharm >/dev/null
+  if [ $? -eq 0 ]; then
     echo "-E- Pycharm is running. Stop first."
     exit 1
-fi
-
+  fi
+}
 
 pushd "$PROJ_DIR" || exit 1
 
-init () {
-    Green "-M- Initializing from backup. FIX THIS!"
-    cp -v "/Users/Q187392/dev/binx/intelij/user.xml_20210228_205741" "$TEMPLATES/user.xml"
+init() {
+  Green "-M- Initializing user.xml"
+  cp -v "/Users/Q187392/dev/binx/intelij/user.xml_20210228_205741" "$TEMPLATES/user_init.xml"
 }
 
-execute () {
-    echo "$1"
-    eval "$1"
+execute() {
+  echo "$1"
+  eval "$1"
 }
 
 ################################################################################
 echo "-M- Start $(date)"
 
+#check-intelij
 init
 
 cmd="$PYTHON snipsync/main.py -c "Bash" -c "SHELL_SCRIPT" $VERBOSE $FORCE "$ULTISNIPS/sh.snippets" "\'$TEMPLATES/user.xml\'""
