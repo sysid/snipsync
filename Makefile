@@ -23,7 +23,7 @@ help:
 default: all
 
 .PHONY: all
-all: clean build upload tag
+all: commit bump build upload tag
 	@echo "--------------------------------------------------------------------------------"
 	@echo "-M- building and distributing"
 	@echo "--------------------------------------------------------------------------------"
@@ -38,16 +38,20 @@ clean:
 	rm -rf dist
 
 .PHONY: build
-build: clean black isort
+build: clean black isort commit
 	@echo "building"
-	git add .
-	git commit
-	git push
 	#python setup.py sdist
 	python -m build
 
+.PHONY: commit
+commit:
+	@echo "Committing"
+	git add .
+	git commit
+	git push
+
 .PHONY: upload
-upload: bump
+upload:
 	@echo "upload"
 	twine upload --verbose dist/*
 
