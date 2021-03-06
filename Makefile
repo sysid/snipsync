@@ -40,14 +40,14 @@ clean:
 .PHONY: build
 build: black isort
 	@echo "building"
-	#git add .
-	#git commit
-	#git push
+	git add .
+	git commit
+	git push
 	#python setup.py sdist
 	python -m build
 
 .PHONY: upload
-upload:
+upload: bump
 	@echo "upload"
 	twine upload --verbose dist/*
 
@@ -68,3 +68,8 @@ black:
 .PHONY: isort
 isort:
 	$(isort)
+
+.PHONY: bump
+bump:
+	#bumpversion --dry-run --allow-dirty --verbose patch
+	bumpversion --verbose patch
