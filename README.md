@@ -24,3 +24,6 @@ Do not:
 
 Instead do:
 `test -z "\${1}" && echo "-E- tag required." 1>&2 && exit 1`
+
+## development
+`pipenv install -e .`

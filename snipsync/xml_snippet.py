@@ -2,12 +2,12 @@ import logging
 import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Union, Iterable, Dict
+from typing import Dict, Iterable, Union
 
-from snipsync.lexer import tokenize, TabStopToken
+from snipsync.lexer import TabStopToken, tokenize
 from snipsync.position import Position
 from snipsync.settings import ALLOWED_TOKENS
-from snipsync.ultisnip import UltiSnipsSnippetDefinition, UltiSnipsFileSource
+from snipsync.ultisnip import UltiSnipsFileSource, UltiSnipsSnippetDefinition
 
 _log = logging.getLogger(__name__)
 
@@ -32,7 +32,9 @@ class XmlSnippet:
         return len(snips) > 0
 
     @staticmethod
-    def create_xml(snip: UltiSnipsSnippetDefinition, context: Iterable[str]) -> ET.Element:
+    def create_xml(
+        snip: UltiSnipsSnippetDefinition, context: Iterable[str]
+    ) -> ET.Element:
         text = snip._value
 
         intelij_vars = XmlSnippet.create_variables(text)
@@ -50,7 +52,7 @@ class XmlSnippet:
         template = ET.Element("template", attrib=snip_attr)
 
         for _, var_attr in intelij_vars.items():
-            variable = ET.SubElement(template, 'variable', attrib=var_attr)
+            variable = ET.SubElement(template, "variable", attrib=var_attr)
 
         context_tag = ET.SubElement(template, "context")
         for c in context:
@@ -73,14 +75,22 @@ class XmlSnippet:
 
             var_attrs = intelij_vars.get(token_number)
             if var_attrs is not None:
-                text = mo.string[: mo.start()] + f"${var_attrs['name']}$" + mo.string[mo.end():]
+                text = (
+                    mo.string[: mo.start()]
+                    + f"${var_attrs['name']}$"
+                    + mo.string[mo.end() :]
+                )
             else:
                 # this is required to ensure finite loop (search pattern must be removed from text)
-                text = mo.string[: mo.start()] + f"_parameter_to_change_" + mo.string[mo.end():]
+                text = (
+                    mo.string[: mo.start()]
+                    + f"_parameter_to_change_"
+                    + mo.string[mo.end() :]
+                )
 
             mo = _MIRROR.search(text)
             n += 1
-        text = text.replace(r'\$', '$$')  # adjust dollar escaping to intelij
+        text = text.replace(r"\$", "$$")  # adjust dollar escaping to intelij
         return text
 
     @staticmethod
@@ -99,14 +109,22 @@ class XmlSnippet:
 
             var_attrs = intelij_vars.get(token_number)
             if var_attrs is not None:
-                text = mo.string[: mo.start()] + f"${var_attrs['name']}$" + mo.string[mo.end():]
+                text = (
+                    mo.string[: mo.start()]
+                    + f"${var_attrs['name']}$"
+                    + mo.string[mo.end() :]
+                )
             else:
                 # this is required to ensure finite loop (search pattern must be removed from text)
-                text = mo.string[: mo.start()] + f"_parameter_to_change_" + mo.string[mo.end():]
+                text = (
+                    mo.string[: mo.start()]
+                    + f"_parameter_to_change_"
+                    + mo.string[mo.end() :]
+                )
 
             mo = _TABSTOP.search(text)
             n += 1
-        text = text.replace(r'\$', '$$')  # adjust dollar escaping to intelij
+        text = text.replace(r"\$", "$$")  # adjust dollar escaping to intelij
         return text
 
     @staticmethod
@@ -135,7 +153,7 @@ class XmlSnippet:
         root.insert(len(root), snip)
 
     def update(self, snip: ET.Element):
-        name = snip.attrib.get('name')
+        name = snip.attrib.get("name")
         snips = self.et.findall(f"template[@name='{name}']")
         assert len(snips) == 1, f"{name} ambiguous or non-existent, cannot update."
 
@@ -151,7 +169,7 @@ class XmlSnippet:
         _log.info(f"Inserted snippet: {snip.trigger}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     p = Path("../data/sh.snippets")
     with open(p, "r", encoding="utf-8") as f:
         ultisnips = f.read()
@@ -163,7 +181,7 @@ if __name__ == '__main__':
     _ = next(data)[1][0]
     _ = next(data)[1][0]
     arr_snip = next(data)[1][0]
-    snip_xml = XmlSnippet.create_xml(arr_snip, context=('Bash', 'SHELL_SCRIPT'))
+    snip_xml = XmlSnippet.create_xml(arr_snip, context=("Bash", "SHELL_SCRIPT"))
     assert len(snip_xml.findall(".//option[@name='Bash']")) == 1
     assert len(snip_xml.findall(".//option[@name='SHELL_SCRIPT']")) == 1
     ET.indent(snip_xml)  # pretty printing

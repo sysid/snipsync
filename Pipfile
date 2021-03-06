@@ -5,9 +5,12 @@ name = "pypi"
 
 [packages]
 typer = "*"
+snipsync = {editable = true, path = "."}
 
 [dev-packages]
 pytest = "*"
+build = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.9"

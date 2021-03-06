@@ -4,7 +4,11 @@ from textwrap import dedent
 import pytest
 
 from snipsync.text import LineIterator
-from snipsync.ultisnip import UltiSnipsFileSource, UltiSnipsSnippetDefinition, _handle_snippet_or_global
+from snipsync.ultisnip import (
+    UltiSnipsFileSource,
+    UltiSnipsSnippetDefinition,
+    _handle_snippet_or_global,
+)
 
 
 def test_ultisnips_file_source(ultisnips, ultisnips_file):
@@ -28,7 +32,7 @@ def test_create_snippet_definition_object(arr_snip_value, snippets):
 
     # when
     snippet, defintion = _handle_snippet_or_global(
-        filename='test_filename',
+        filename="test_filename",
         line=line,
         lines=lines,
         python_globals=python_globals,
@@ -39,5 +43,5 @@ def test_create_snippet_definition_object(arr_snip_value, snippets):
 
     # then
     _ = None
-    assert snippet == 'snippet'
+    assert snippet == "snippet"
     assert defintion[0]._value == arr_snip_value

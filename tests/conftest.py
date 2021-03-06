@@ -6,15 +6,17 @@ import pytest
 
 from snipsync.ultisnip import UltiSnipsFileSource, UltiSnipsSnippetDefinition
 
+ROOT_DIR = Path(__file__).parent.parent.absolute()
+
 
 @pytest.fixture()
 def xmlsnips_file():
-    return Path("../data/user.xml")
+    return ROOT_DIR / "data/user.xml"
 
 
 @pytest.fixture()
 def ultisnips_file():
-    return Path("../data/sh.snippets")
+    return ROOT_DIR / "data/sh.snippets"
 
 
 @pytest.fixture()
@@ -77,21 +79,21 @@ def arr_snip(ultisnips) -> UltiSnipsSnippetDefinition:
 def intelij_vars() -> Dict:
     return {
         0: dict(
-            name='param0',
+            name="param0",
             expression="",
-            defaultValue='default0',
+            defaultValue="default0",
             alwaysStopAt="true",
         ),
         1: dict(
-            name='param1',
+            name="param1",
             expression="",
-            defaultValue='default1',
+            defaultValue="default1",
             alwaysStopAt="true",
         ),
         2: dict(
-            name='param2',
+            name="param2",
             expression="",
-            defaultValue='default2',
+            defaultValue="default2",
             alwaysStopAt="true",
         ),
     }
@@ -138,8 +140,9 @@ def snippets():
             # Assert there is at least one tag provided
             test -z "\$${1:var}" && echo "-E- tag required." 1>&2 && exit 1
             endsnippet
-        """
+        """,
     )
+
 
 # print(dedent(snippets[0]))
 # print(snippets[0])
