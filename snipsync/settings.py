@@ -24,13 +24,13 @@ ALLOWED_TOKENS = [
 
 CONFIG_TEMPLATE = """\
 [DEFAULT]
-templates = "$HOME/Library/Application Support/JetBrains/PyCharm2020.3/jba_config/templates"
+live_templates = "$HOME/Library/Application Support/JetBrains/PyCharm2020.3/jba_config/templates"
 ultisnips = "$HOME/dev/binx/vim-config/UltiSnips"
+
+[GLOBAL]
 init = yes
 
-[FILES]
-files = [
-    sh.snippets
-    python.snippets
-]
+[SHELL]
+ultisnips = %(ultisnips)s/sh.snippets
+live_templates = %(live_templates)s/sh.snippets
 """

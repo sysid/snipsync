@@ -2,8 +2,9 @@ import configparser
 import json
 import logging
 import xml.etree.ElementTree as ET
+from collections import defaultdict
 from pathlib import Path
-from typing import List
+from typing import List, Dict
 
 import typer
 
@@ -49,22 +50,53 @@ def dir(
     typer.edit(CONFIG_TEMPLATE, filename=config_path)
     typer.echo(f"Config file is: {config_path}")
 
-    config = configparser.ConfigParser(strict=True)
-    config.read(config_path)
-    ultisnips = Path(config['DEFAULT']['ultisnips']).resolve()
-    templates = Path(config['DEFAULT']['templates']).resolve()
-    ctx.obj['ultisnips'] = ultisnips
-    ctx.obj['templates'] = templates
-
-    ctx.obj['init'] = config['DEFAULT'].getboolean('init', fallback=False)
-    xxx = config.get('FILES', 'files')
-    try:
-        xxx = json.loads(xxx)
-    except json.JSONDecodeError as e:
-        typer.secho(f"Wrong JSON format in {config_path}: [FILES].", fg="red")
-        raise typer.Abort()
+    ctx.obj = parse_config(config_path, ctx)
     _ = None
 
+
+def parse_config(config_path) -> Dict:
+    cfg = dict()
+    config = configparser.ConfigParser(strict=True)
+    config.read(config_path)
+
+    # ultisnips = Path(config['DEFAULT']['ultisnips']).resolve()
+    # live_templates = Path(config['DEFAULT']['live_templates']).resolve()
+
+    # cfg['ultisnips'] = ultisnips
+    # cfg['live_templates'] = live_templates
+    cfg['init'] = config['GLOBAL'].getboolean('init', fallback=False)
+    cfg['snip'] = defaultdict(dict)
+
+    for section in config.sections():
+        if 'SNIP' not in section:
+            continue
+        type_ = section.split('.')[-1]
+        cfg['snip'][type_]['source'] = config[section].get('ultisnips')
+        cfg['snip'][type_]['target'] = config[section].get('live_templates')
+    return cfg
+
+
+@app.command()
+def auto_sync(
+        ctx: typer.Context,
+        verbose: bool = typer.Option(False, "--verbose", "-v", help="verbose"),
+        save: bool = typer.Option(False, "--save", "-s", help="save it to InteliJ"),
+        context: List[str] = typer.Option(
+            ..., "--context", "-c", help="scope/context in InteliJ"
+        ),
+        ultisnip_file: Path = typer.Argument(..., help="ultisnips source", exists=True),
+        xmlsnip_file: Path = typer.Argument(..., help="xmlsnip target", exists=True),
+):
+    """
+    Synchronizes Ultisnip snippets to InteliJ Live Templates
+    """
+    typer.secho(f"-M- Syncing {ultisnip_file}", fg="green")
+
+    ultisnips = ctx.obj.get("ultisnips")
+    templates = ctx.obj.get("templates")
+    files = ctx.obj.get("files")
+
+    xml_snippets = XmlSnippet(xmlsnip_file)
 
 @app.command()
 def sync(
@@ -81,6 +113,11 @@ def sync(
     Synchronizes Ultisnip snippets to InteliJ Live Templates
     """
     typer.secho(f"-M- Syncing {ultisnip_file}", fg="green")
+
+    ultisnips = ctx.obj.get("ultisnips")
+    templates = ctx.obj.get("templates")
+    files = ctx.obj.get("files")
+
     xml_snippets = XmlSnippet(xmlsnip_file)
 
     source = UltiSnipsFileSource()
