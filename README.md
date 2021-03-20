@@ -13,6 +13,7 @@ shutdown. So any external changes to LiveTemplates will be overwritten.
 # sync Ultisnip snippets based on static configuration
 snipsync auto-sync
 
+# sync Ultisnip snippets based on CLI arguments
 snipsync sync -c "Python" "~/dev/binx/vim-config/UltiSnips/python.snippets" "~/Library/Application Support/JetBrains/PyCharm2020.3/jba_config/templates/user.xml"
 ```
 
@@ -91,4 +92,4 @@ Write in your Ultisnip template:
 
 
 ## Changelog
-0.0.7 Inital release
+0.0.8 Inital release
