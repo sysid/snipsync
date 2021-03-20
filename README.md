@@ -9,7 +9,7 @@ syntax.
 - JetBrains must not be running during the update because is holds LiveTemplates in memory and saves them to disk at
 shutdown. So any external changes to LiveTemplates will be overwritten.
   
-```bash
+```sh
 # sync Ultisnip snippets based on static configuration
 snipsync auto-sync
 
