@@ -92,4 +92,4 @@ Write in your Ultisnip template:
 
 
 ## Changelog
-0.0.8 Inital release
+0.0.9 Inital release
