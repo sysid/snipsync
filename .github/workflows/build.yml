@@ -1,5 +1,4 @@
 # https://github.com/nalgeon/podsearch-py/tree/main/.github/workflows
-# CODECOV_TOKEN='5dfd1ffb-9f65-4d98-9127-99afb96d0907'
 name: build
 
 on:
