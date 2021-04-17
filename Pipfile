@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 typer = "*"
 snipsync = {editable = true, path = "."}
+appdirs = "*"
 
 [dev-packages]
 pytest = "*"
