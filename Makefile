@@ -110,3 +110,7 @@ isort:  ## isort
 bump:  ## bump
 	#bumpversion --dry-run --allow-dirty --verbose patch
 	bumpversion --verbose patch
+
+.PHONY: dist-test
+dist-test: dist  ## - test a wheel distribution package
+	@cd dist && ../tests/test-dist.bash ./snipsync-*-py3-none-any.whl
