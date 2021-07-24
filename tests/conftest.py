@@ -1,3 +1,4 @@
+import shutil
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Dict
@@ -10,13 +11,18 @@ ROOT_DIR = Path(__file__).parent.parent.absolute()
 
 
 @pytest.fixture()
+def config_file():
+    return ROOT_DIR / "tests/data/config.cfg"
+
+
+@pytest.fixture()
 def xmlsnips_file():
-    return ROOT_DIR / "data/user.xml"
+    return ROOT_DIR / "tests/data/user.xml"
 
 
 @pytest.fixture()
 def ultisnips_file():
-    return ROOT_DIR / "data/sh.snippets"
+    return ROOT_DIR / "tests/data/sh.snippets"
 
 
 @pytest.fixture()
@@ -142,7 +148,6 @@ def snippets():
             endsnippet
         """,
     )
-
 
 # print(dedent(snippets[0]))
 # print(snippets[0])

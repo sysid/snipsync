@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/snipsync.iml" filepath="$PROJECT_DIR$/.idea/snipsync.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ultisnips/.idea/ultisnips.iml" filepath="$PROJECT_DIR$/../ultisnips/.idea/ultisnips.iml" />
+    </modules>
+  </component>
+</project>

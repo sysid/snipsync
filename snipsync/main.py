@@ -34,9 +34,9 @@ def setup(
 @app.command()
 def dir(
     ctx: typer.Context,
-):
+):  # pragma: no cover
     """
-    Show the location of the configuration file
+    Open/create configuration file for potential adjustment.
     """
     app_dir = ctx.obj.get("app_dir")
     config_path = ctx.obj.get("config_path")
