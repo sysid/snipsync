@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab278348-99f5-4d9a-a763-26767a951efa" name="Default Changelist" comment="feat: replace MIRRORs">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/_template__of_py_test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/_template__of_py_test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_cli.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_cli.py" afterDir="false" />
-    </list>
+    <list default="true" id="ab278348-99f5-4d9a-a763-26767a951efa" name="Default Changelist" comment="feat: replace MIRRORs" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -70,7 +66,7 @@
       <recent name="$PROJECT_DIR$/test/test_tokenize.py" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_cli.test_sync">
+  <component name="RunManager" selected="Python tests.pytest for test_cli.test_sync_with_save">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -198,6 +194,34 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
+    <configuration name="pytest for test_cli.test_sync_with_save" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="snipsync" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="true" />
+        <option name="IS_SUBST" value="true" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+          <ENTRY IS_ENABLED="true" PARSER="env" PATH=".env.pycharm" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_cli.test_sync_with_save&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
     <configuration name="pytest in test_cli.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="snipsync" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -232,9 +256,11 @@
       <item itemvalue="Python.main-dir" />
       <item itemvalue="Python tests.pytest for test_cli.test_sync" />
       <item itemvalue="Python tests.pytest in test_cli.py" />
+      <item itemvalue="Python tests.pytest for test_cli.test_sync_with_save" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest for test_cli.test_sync_with_save" />
         <item itemvalue="Python tests.pytest for test_cli.test_sync" />
         <item itemvalue="Python tests.pytest in test_cli.py" />
       </list>
@@ -281,7 +307,7 @@
       <workItem from="1618659909384" duration="4574000" />
       <workItem from="1618734021340" duration="1546000" />
       <workItem from="1618994790582" duration="32000" />
-      <workItem from="1627135124044" duration="8007000" />
+      <workItem from="1627135124044" duration="9124000" />
     </task>
     <task id="LOCAL-00001" summary="feat: replace MIRRORs">
       <created>1614797220515</created>
@@ -328,7 +354,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/tests/test_cli.py</url>
-          <line>43</line>
+          <line>63</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -387,6 +413,7 @@
     <SUITE FILE_PATH="coverage/snipsync$pytest_for_test_io_TestXmlSnippet_test_upsert_snip_new.coverage" NAME="pytest for test_io.TestXmlSnippet.test_upsert_snip_new Coverage Results" MODIFIED="1614540121205" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/snipsync$pytest_for_test_io_TestXmlSnippet_test_upsert_snip_existing.coverage" NAME="pytest for test_io.TestXmlSnippet.test_upsert_snip_existing Coverage Results" MODIFIED="1614540124803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/snipsync$pytest_in_test_ultisnip_py.coverage" NAME="pytest in test_ultisnip.py Coverage Results" MODIFIED="1614720394055" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/snipsync$pytest_for_test_cli_test_sync_with_save.coverage" NAME="pytest for test_cli.test_sync_with_save Coverage Results" MODIFIED="1627158239338" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/snipsync$pytest_in_test_tokenize_py.coverage" NAME="pytest in test_tokenize.py Coverage Results" MODIFIED="1614696348760" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/snipsync$pytest_for_test_ultisnip_test_create_snippet_definition_object.coverage" NAME="pytest for test_ultisnip.test_create_snippet_definition_object Coverage Results" MODIFIED="1614720476312" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/snipsync$pytest_for_test_io_test_create_xml.coverage" NAME="pytest for test_io.test_create_xml Coverage Results" MODIFIED="1614424448504" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />

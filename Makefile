@@ -36,6 +36,7 @@ tox:   ## Run tox
 .PHONY: coverage
 coverage:  ## Run tests with coverage
 	python -m coverage erase
+	#python -m coverage run --include=$(pkg_src)/* --omit="$(pkg_src)/text.py" -m pytest -ra
 	python -m coverage run --include=$(pkg_src)/* -m pytest -ra
 	#python -m coverage report -m
 	python -m coverage html

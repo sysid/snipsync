@@ -9,7 +9,7 @@ class JumpDirection(Enum):
     BACKWARD = 2
 
 
-class Position:
+class Position:  # pragma: no cover
     """Represents a Position in a text file: (0 based line index, 0 based column
     index) and provides methods for moving them around."""
 

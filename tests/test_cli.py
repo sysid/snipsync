@@ -68,3 +68,26 @@ def test_sync_without_save(xmlsnips_file):
         "-M- Syncing tests/data/python.snippets -> tests/data/user.xml" in result.stdout
     )
     _ = None
+
+
+def test_sync_with_save(xmlsnips_file):
+    result = runner.invoke(
+        app,
+        [
+            "sync",
+            "-c",
+            "Bash",
+            "-c",
+            "Python",
+            "-s",
+            "tests/data/python.snippets",
+            "tests/data/user.xml",
+        ],
+    )
+    assert result.exit_code == 0
+    data = Path(xmlsnips_file).read_text()
+    assert 'twlog' in data
+    assert (
+            "-M- Syncing tests/data/python.snippets -> tests/data/user.xml" in result.stdout
+    )
+    _ = None
