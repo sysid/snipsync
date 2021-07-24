@@ -22,7 +22,7 @@ APP_NAME = "snipsync"
 def setup(
     ctx: typer.Context,
 ):
-    """ Global setup """
+    """Global setup"""
     app_dir = typer.get_app_dir(APP_NAME)
     ctx.obj = dict(
         app_dir=Path(app_dir),

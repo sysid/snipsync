@@ -11,8 +11,14 @@ from snipsync.xml_snippet import XmlSnippet, read_ultisnips
 def init_files():
     (Path(__file__).parent / "data/user.xml").unlink(missing_ok=True)
     (Path(__file__).parent / "data/config.cfg").unlink(missing_ok=True)
-    shutil.copy(Path(__file__).parent / 'data/config.cfg.bkp', Path(__file__).parent / 'data/config.cfg')
-    shutil.copy(Path(__file__).parent / 'data/user.xml.bkp', Path(__file__).parent / 'data/user.xml')
+    shutil.copy(
+        Path(__file__).parent / "data/config.cfg.bkp",
+        Path(__file__).parent / "data/config.cfg",
+    )
+    shutil.copy(
+        Path(__file__).parent / "data/user.xml.bkp",
+        Path(__file__).parent / "data/user.xml",
+    )
 
 
 def test_read_ultisnips(ultisnips_file):
@@ -50,10 +56,10 @@ class TestXmlSnippet:
         assert len(snip_xml.findall(".//option[@name='SHELL_SCRIPT']")) == 1
         assert len(snip_xml.findall(".//variable[@name='param1']")) == 1
         assert (
-                snip_xml.findall(".//variable[@name='param1']")[0].attrib.get(
-                    "defaultValue"
-                )
-                == "arr"
+            snip_xml.findall(".//variable[@name='param1']")[0].attrib.get(
+                "defaultValue"
+            )
+            == "arr"
         )
         ET.indent(snip_xml)  # pretty printing
         ET.dump(snip_xml)
