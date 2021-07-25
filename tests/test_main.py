@@ -4,7 +4,7 @@ from pathlib import Path, PosixPath
 import click
 import pytest
 
-from snipsync.main import parse_config, check_intellij_installation
+from snipsync.main import check_intellij_installation, parse_config
 from tests.conftest import ROOT_DIR
 
 
@@ -23,18 +23,18 @@ def test_parse_invalid_config():
 
 
 DIRECTORY_LISTING = [
-    PosixPath("/Users/Q187392/Library/Application Support/JetBrains/WebStorm2020.1"),
-    PosixPath("/Users/Q187392/Library/Application Support/JetBrains/PyCharm2021.1"),
-    PosixPath("/Users/Q187392/Library/Application Support/JetBrains/IdeaIC2021.1"),
-    PosixPath("/Users/Q187392/Library/Application Support/JetBrains/consentOptions"),
-    PosixPath("/Users/Q187392/Library/Application Support/JetBrains/PyCharm2020.3"),
-    PosixPath("/Users/Q187392/Library/Application Support/JetBrains/IdeaIC2020.3"),
-    PosixPath("/Users/Q187392/Library/Application Support/JetBrains/PyCharm2020.2"),
-    PosixPath("/Users/Q187392/Library/Application Support/JetBrains/Pycharm"),
-    PosixPath("/Users/Q187392/Library/Application Support/JetBrains/WebStorm2020.3"),
-    PosixPath("/Users/Q187392/Library/Application Support/JetBrains/Webstorm"),
-    PosixPath("/Users/Q187392/Library/Application Support/JetBrains/WebStorm2021.1"),
-    PosixPath("/Users/Q187392/Library/Application Support/JetBrains/PyCharm2020.1"),
+    PosixPath("~/Library/Application Support/JetBrains/WebStorm2020.1").expanduser(),
+    PosixPath("~/Library/Application Support/JetBrains/PyCharm2021.1").expanduser(),
+    PosixPath("~/Library/Application Support/JetBrains/IdeaIC2021.1").expanduser(),
+    PosixPath("~/Library/Application Support/JetBrains/consentOptions").expanduser(),
+    PosixPath("~/Library/Application Support/JetBrains/PyCharm2020.3").expanduser(),
+    PosixPath("~/Library/Application Support/JetBrains/IdeaIC2020.3").expanduser(),
+    PosixPath("~/Library/Application Support/JetBrains/PyCharm2020.2").expanduser(),
+    PosixPath("~/Library/Application Support/JetBrains/Pycharm").expanduser(),
+    PosixPath("~/Library/Application Support/JetBrains/WebStorm2020.3").expanduser(),
+    PosixPath("~/Library/Application Support/JetBrains/Webstorm").expanduser(),
+    PosixPath("~/Library/Application Support/JetBrains/WebStorm2021.1").expanduser(),
+    PosixPath("~/Library/Application Support/JetBrains/PyCharm2020.1").expanduser(),
 ]
 
 
@@ -70,12 +70,13 @@ def test_check_intellij_installation_raise(mocker, snippet_path, is_dir):
 
 
 @pytest.mark.parametrize(
-    ("snippet_path", "result"),
+    ("snippet_path", "is_dir", "result"),
     (
         (
             Path(
                 "~/Library/Application Support/JetBrains/PyCharm2021.1/jba_config/templates"
             ).expanduser(),
+            True,
             True,
         ),
         (
@@ -83,16 +84,18 @@ def test_check_intellij_installation_raise(mocker, snippet_path, is_dir):
                 "~/Library/Application Support/JetBrains/WebStorm2021.1/jba_config/templates"
             ).expanduser(),
             True,
+            True,
         ),
     ),
 )
-def test_check_intellij_installation(mocker, snippet_path, result):
+def test_check_intellij_installation(mocker, snippet_path, is_dir, result):
     mocker.patch("snipsync.main.Path.glob", return_value=DIRECTORY_LISTING)
+    mocker.patch("snipsync.main.Path.is_dir", return_value=is_dir)
     # p = Path("~/Library/Application Support/JetBrains/PyCharm2021.1/jba_config/templates").expanduser()
     assert check_intellij_installation(snippet_path)
 
 
-# @pytest.mark.skip("manual testing")
+@pytest.mark.skip("manual testing")
 def test_check_intellij_installation_manual():
     snippet_path = Path(
         "~/Library/Application Support/JetBrains/PyCharm2021.1/jba_config/templates"

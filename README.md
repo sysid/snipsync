@@ -90,14 +90,15 @@ If your settings are synchronized through JetBrains IDE Settings Sync plugin, th
 
 
 ## Changelog
-0.1.0 Increase test coverage, update documentation
-0.0.9 Inital release
+- 0.2.0 Check for latest JetBrain software to ensure that latest user.xml will be updated  
+- 0.1.0 Increase test coverage, update documentation  
+- 0.0.9 Inital release  
 
 ...
 
 <!-- Badges -->
 
-[pypi-image]: https://img.shields.io/pypi/v/snipsync
+[pypi-image]: https://img.shields.io/pypi/v/snipsync?color=green
 [pypi-url]: https://pypi.org/project/snipsync/
 [build-image]: https://github.com/sysid/snipsync/actions/workflows/build.yml/badge.svg
 [build-url]: https://github.com/sysid/snipsync/actions/workflows/build.yml
