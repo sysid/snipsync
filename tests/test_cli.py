@@ -40,7 +40,7 @@ def test_dir(mock_get_app_dir):
 
 
 def test_auto_sync(mocker, xmlsnips_file):
-    mocker.patch('snipsync.main.check_intellij_installation', return_value=True)
+    mocker.patch("snipsync.main.check_intellij_installation", return_value=True)
     result = runner.invoke(app, ["auto-sync"])
     assert result.exit_code == 0
     data = Path(xmlsnips_file).read_text()
@@ -50,7 +50,7 @@ def test_auto_sync(mocker, xmlsnips_file):
 
 
 def test_sync_without_save(mocker, xmlsnips_file):
-    mocker.patch('snipsync.main.check_intellij_installation', return_value=True)
+    mocker.patch("snipsync.main.check_intellij_installation", return_value=True)
     result = runner.invoke(
         app,
         [
@@ -71,7 +71,7 @@ def test_sync_without_save(mocker, xmlsnips_file):
 
 
 def test_sync_with_save(mocker, xmlsnips_file):
-    mocker.patch('snipsync.main.check_intellij_installation', return_value=True)
+    mocker.patch("snipsync.main.check_intellij_installation", return_value=True)
     result = runner.invoke(
         app,
         [
@@ -87,8 +87,8 @@ def test_sync_with_save(mocker, xmlsnips_file):
     )
     assert result.exit_code == 0
     data = Path(xmlsnips_file).read_text()
-    assert 'twlog' in data
+    assert "twlog" in data
     assert (
-            "-M- Syncing tests/data/python.snippets -> tests/data/user.xml" in result.stdout
+        "-M- Syncing tests/data/python.snippets -> tests/data/user.xml" in result.stdout
     )
     _ = None
