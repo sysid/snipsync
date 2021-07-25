@@ -2,7 +2,8 @@
 SOURCEDIR     = source
 BUILDDIR      = build
 MAKE          = make
-VERSION       = $(shell cat snipsync/__init__.py | grep __version__ | sed "s/__version__ = //" | sed "s/'//g")
+#VERSION       = $(shell cat snipsync/__init__.py | grep __version__ | sed "s/__version__ = //" | sed "s/'//g")
+VERSION       = $(shell cat VERSION)
 
 .DEFAULT_GOAL := help
 
