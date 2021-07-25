@@ -3,12 +3,13 @@ import json
 import logging
 import xml.etree.ElementTree as ET
 from collections import defaultdict
+from enum import Enum
 from pathlib import Path
 from typing import Dict, List
 
 import typer
 
-from snipsync.settings import CONFIG_TEMPLATE, USER_XML_TEMPLATE
+from snipsync.settings import CONFIG_TEMPLATE, USER_XML_TEMPLATE, IdeEnum
 from snipsync.ultisnip import UltiSnipsFileSource
 from snipsync.xml_snippet import XmlSnippet, read_ultisnips
 
@@ -20,7 +21,7 @@ APP_NAME = "snipsync"
 
 @app.callback()
 def setup(
-    ctx: typer.Context,
+        ctx: typer.Context,
 ):
     """Global setup"""
     app_dir = typer.get_app_dir(APP_NAME)
@@ -33,7 +34,7 @@ def setup(
 
 @app.command()
 def dir(
-    ctx: typer.Context,
+        ctx: typer.Context,
 ):  # pragma: no cover
     """
     Open/create configuration file for potential adjustment.
@@ -81,11 +82,47 @@ def parse_config(config_path) -> Dict:
     return cfg
 
 
+def check_intellij_installation(p: Path) -> bool:
+    """
+    Check whether valid and latest InteliJ IDE is target for user.xml
+    :param p: path to the user.xml
+    :raises if not valid or outdated
+    """
+    if not p.is_dir():
+        typer.secho(f"{p} is not a valid directory.", color=typer.colors.RED)
+        raise typer.Abort()
+
+    for ide in IdeEnum:
+        if ide.value.lower() in str(p).lower():
+            break
+    else:
+        typer.secho(f"Given path {p} invalid. Mus contain one of: {[ide.value for ide in IdeEnum]}", color=typer.colors.RED)
+        raise typer.Abort()
+
+    root = f"{str(p).split('JetBrains')[0]}JetBrains"
+    GLOB = f"*"
+
+    dirs = [d for d in Path(root).glob(GLOB) if d.is_dir()]
+    dirs = [d for d in dirs if ide.value in str(d)]
+    if len(dirs) == 0:
+        typer.secho(f"No installation {ide.value} found in {root}", color=typer.colors.RED)
+        raise typer.Abort()
+
+    latest_installation = sorted(dirs)[-1]
+
+    if latest_installation not in p.parents:
+        typer.secho(f"There seems to be a newer version of Intellij: {latest_installation} ", color=typer.colors.RED)
+        typer.secho(f"Please check your snipsync configuration.", color=typer.colors.RED)
+        raise typer.Abort()
+
+    return True  # for pytest assertions
+
+
 @app.command()
 def auto_sync(
-    ctx: typer.Context,
-    verbose: bool = typer.Option(False, "--verbose", "-v", help="verbose"),
-    save: bool = typer.Option(False, "--save", "-s", help="save it to InteliJ"),
+        ctx: typer.Context,
+        verbose: bool = typer.Option(False, "--verbose", "-v", help="verbose"),
+        save: bool = typer.Option(False, "--save", "-s", help="save it to InteliJ"),
 ):
     """
     Synchronizes Ultisnip snippets to InteliJ Live Templates controlled by config-file
@@ -100,11 +137,11 @@ def auto_sync(
 
     typer.secho(f"-M- Configuration: {config_path}", fg=None)
     config = parse_config(config_path)
+    check_intellij_installation(config.get('live_templates_path'))
 
     # TODO: expand to work for arbitrary xml file not only user.xml
     user_xml_template_path = config.get("live_templates_path") / "user.xml"
     if config.get("init") or not Path(user_xml_template_path).is_file():
-
         typer.secho(f"-M- Initializing : {user_xml_template_path}", fg=None)
 
         with open(user_xml_template_path, "w") as textfile:
@@ -130,23 +167,24 @@ def auto_sync(
 
 @app.command()
 def sync(
-    ctx: typer.Context,
-    verbose: bool = typer.Option(False, "--verbose", "-v", help="verbose"),
-    save: bool = typer.Option(False, "--save", "-s", help="save it to InteliJ"),
-    context: List[str] = typer.Option(
-        ..., "--context", "-c", help="scope/context in InteliJ"
-    ),
-    ultisnip_file: Path = typer.Argument(..., help="ultisnips source", exists=False),
-    xmlsnip_file: Path = typer.Argument(..., help="xmlsnip target", exists=False),
+        ctx: typer.Context,
+        verbose: bool = typer.Option(False, "--verbose", "-v", help="verbose"),
+        save: bool = typer.Option(False, "--save", "-s", help="save it to InteliJ"),
+        context: List[str] = typer.Option(
+            ..., "--context", "-c", help="scope/context in InteliJ"
+        ),
+        ultisnip_file: Path = typer.Argument(..., help="ultisnips source", exists=False),
+        xmlsnip_file: Path = typer.Argument(..., help="xmlsnip target", exists=False),
 ):
     """
-    Synchronizes Ultisnip snippets to InteliJ Live Templates
+    Synchronizes Ultisnip snippets file to InteliJ Live Templates and sets the corresponding Live Template context
     """
     ultisnip_file = ultisnip_file.expanduser()
     if not ultisnip_file.exists():
         typer.secho(f"-E- Invalid UltiSnips source: {ultisnip_file}", fg="red")
         raise typer.Abort()
 
+    check_intellij_installation(xmlsnip_file.parent)
     xmlsnip_file = xmlsnip_file.expanduser()
 
     typer.secho(f"-M- Syncing {ultisnip_file} -> {xmlsnip_file}", fg=None)
@@ -177,7 +215,7 @@ def sync(
 
 
 def live_template_upsert(
-    context: List[str], ultisnip_file: Path, xmlsnip_file: Path
+        context: List[str], ultisnip_file: Path, xmlsnip_file: Path
 ) -> XmlSnippet:
     xml_snippets = XmlSnippet(xmlsnip_file)
 

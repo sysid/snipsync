@@ -4,7 +4,7 @@
 [![Build Status][build-image]][build-url]
 [![Code Coverage][coverage-image]][coverage-url]
 
-Syncs your UltiSnips snippets to JetBrain IDE.
+Syncs your UltiSnips snippets to JetBrain IDE ([see blog](https://sysid.github.io/snipsync/)).
 
 *snipsync* is based on UltiSnips to parse UltiSnips snippets and transforms them into JetBrains XML *LiveTemplate*
 syntax.
@@ -70,7 +70,7 @@ If your settings are synchronized through JetBrains IDE Settings Sync plugin, th
 
 
 ## How does it work?
-- Creates a `user.xml` live template file for intelij IDE form UltiSnip sources.
+- Creates/updates a `user.xml` live template file for intelij IDE from UltiSnip sources.
 - Overwrites existing `user.xml`.
 - Interprets UltiSnips syntax `${1}/${1:name}` as Tabstop (variable to replace) and `$1` (without brackets) as Mirror.
 
@@ -79,23 +79,18 @@ If your settings are synchronized through JetBrains IDE Settings Sync plugin, th
 - Nested Tabstop's are not translated correctly (but are valid Ultisnips syntax)
 
 ## Gotchas
-- make sure that Tabstops use always the format: `${1:default}`, curly brackets
-- make sure that Mirrors never use curly brackets: `$1` instead of `${1}` (would be interpreted as Tabstops)
+- make sure that *Tabstops* use always the format: `${1:default}`, curly brackets
+- make sure that *Mirrors* never use curly brackets: `$1` instead of `${1}` (would be interpreted as *Tabstop*)
 
-Instead of:
-`test -z "\$1" && echo "-E- tag required." 1>&2 && exit 1`
-
-Write in your Ultisnip template:
-`test -z "\${1}" && echo "-E- tag required." 1>&2 && exit 1`
-
-
-## Development
+# Development
 - additionally, generated xml `tags` do not result in error, but are being overwritten when JetBrain app closes, so
   there is no way to extend the JetBrains XML format
 - for development install package locally with: `pipenv install -e .`
+- `lexer.py, text.py, ultisnip.py` are used from Ultisnips directly, so no tests are provided here
 
 
 ## Changelog
+0.1.0 Increase test coverage, update documentation
 0.0.9 Inital release
 
 ...

@@ -24,7 +24,7 @@
       </ENTRIES>
     </EXTENSION>
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/snipsync/main.py" />
-    <option name="PARAMETERS" value="sync -c &quot;Bash&quot; -c &quot;Python&quot; data/python.snippets data/user.xml" />
+    <option name="PARAMETERS" value="sync -c &quot;Bash&quot; -c &quot;Python&quot; data/python.snippets &quot;$USER_HOME$/Library/Application Support/JetBrains/WebStorm2021.1/jba_config/templates/user.xml&quot;" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />

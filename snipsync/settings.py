@@ -1,3 +1,5 @@
+from enum import Enum
+
 from snipsync.lexer import (
     ChoicesToken,
     EscapeCharToken,
@@ -21,6 +23,14 @@ ALLOWED_TOKENS = [
     VimLCodeToken,
     ShellCodeToken,
 ]
+
+
+class IdeEnum(Enum):
+    PYCHARM = "PyCharm"
+    WEBSTORM = "WebStorm"
+    IDEAI = "IdeaI"
+    GOLAND = "GoLand"
+
 
 CONFIG_TEMPLATE = """\
 [DEFAULT]
