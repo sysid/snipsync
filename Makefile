@@ -78,6 +78,10 @@ black:  ## format with black
 isort:  ## isort
 	$(isort)
 
+.PHONY: bump-major
+bump-major:  ## bump-major
+	bumpversion --verbose major
+
 .PHONY: bump-minor
 bump-minor:  ## bump-minor
 	bumpversion --verbose minor
