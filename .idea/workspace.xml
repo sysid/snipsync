@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab278348-99f5-4d9a-a763-26767a951efa" name="Default Changelist" comment="feat: replace MIRRORs">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/setup.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snipsync/environment.py" beforeDir="false" afterPath="$PROJECT_DIR$/snipsync/environment.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/snipsync/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/snipsync/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/data/config_valid.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/tests/data/config_valid.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/snipsync/xml_snippet.py" beforeDir="false" afterPath="$PROJECT_DIR$/snipsync/xml_snippet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_tokenize.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_tokenize.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -373,7 +375,7 @@
       <workItem from="1618734021340" duration="1546000" />
       <workItem from="1618994790582" duration="32000" />
       <workItem from="1627135124044" duration="22839000" />
-      <workItem from="1631963088106" duration="3682000" />
+      <workItem from="1631963088106" duration="3940000" />
     </task>
     <task id="LOCAL-00001" summary="feat: replace MIRRORs">
       <created>1614797220515</created>
@@ -420,7 +422,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/snipsync/main.py</url>
-          <line>128</line>
+          <line>133</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -430,7 +432,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/snipsync/main.py</url>
-          <line>67</line>
+          <line>72</line>
           <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>

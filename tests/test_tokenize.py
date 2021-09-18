@@ -2,9 +2,9 @@ import re
 
 import pytest
 
+from snipsync.environment import ALLOWED_TOKENS
 from snipsync.lexer import EndOfTextToken, MirrorToken, TabStopToken, tokenize
 from snipsync.position import Position
-from snipsync.environment import ALLOWED_TOKENS
 
 
 def test_tokenize():

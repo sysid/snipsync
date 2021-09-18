@@ -1,23 +1,23 @@
 ################################################################################
 # Environment
 ################################################################################
-from enum import Enum
-
 import platform
 import sys
+from enum import Enum
 from pathlib import Path
+
 from pydantic import BaseSettings
 
 from snipsync.lexer import (
-    EscapeCharToken,
-    VisualToken,
-    TransformationToken,
     ChoicesToken,
-    TabStopToken,
+    EscapeCharToken,
     MirrorToken,
     PythonCodeToken,
-    VimLCodeToken,
     ShellCodeToken,
+    TabStopToken,
+    TransformationToken,
+    VimLCodeToken,
+    VisualToken,
 )
 
 ROOT_DIR = Path(__file__).parent.absolute()

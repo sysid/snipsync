@@ -4,9 +4,9 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Dict, Iterable, Union
 
+from snipsync.environment import ALLOWED_TOKENS
 from snipsync.lexer import TabStopToken, tokenize
 from snipsync.position import Position
-from snipsync.environment import ALLOWED_TOKENS
 from snipsync.ultisnip import UltiSnipsFileSource, UltiSnipsSnippetDefinition
 
 _log = logging.getLogger(__name__)

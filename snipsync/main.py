@@ -10,10 +10,10 @@ from typing import Dict, List
 import typer
 
 from snipsync.environment import (
-    IdeEnum,
     CONFIG_TEMPLATE,
-    USER_XML_TEMPLATE,
     INTELIJ_CONFIG_DIR,
+    USER_XML_TEMPLATE,
+    IdeEnum,
 )
 from snipsync.ultisnip import UltiSnipsFileSource
 from snipsync.xml_snippet import XmlSnippet, read_ultisnips
