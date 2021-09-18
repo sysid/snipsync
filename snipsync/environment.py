@@ -8,8 +8,17 @@ import sys
 from pathlib import Path
 from pydantic import BaseSettings
 
-from snipsync.lexer import EscapeCharToken, VisualToken, TransformationToken, ChoicesToken, TabStopToken, MirrorToken, \
-    PythonCodeToken, VimLCodeToken, ShellCodeToken
+from snipsync.lexer import (
+    EscapeCharToken,
+    VisualToken,
+    TransformationToken,
+    ChoicesToken,
+    TabStopToken,
+    MirrorToken,
+    PythonCodeToken,
+    VimLCodeToken,
+    ShellCodeToken,
+)
 
 ROOT_DIR = Path(__file__).parent.absolute()
 
@@ -28,11 +37,12 @@ else:
     print("Unidentified system")
     sys.exit(1)
 
-
+# https://www.jetbrains.com/help/idea/directories-used-by-the-ide-to-store-settings-caches-plugins-and-logs.html#config-directory
 CONFIG_TEMPLATE = """\
 [DEFAULT]
 live_templates_path = ~/Library/Application Support/JetBrains/PyCharm2020.3/jba_config/templates
 ultisnips_path = ~/dev/binx/vim-config/UltiSnips
+product = PyCharm2021
 
 [GLOBAL]
 init = yes

@@ -9,7 +9,12 @@ from typing import Dict, List
 
 import typer
 
-from snipsync.environment import IdeEnum, CONFIG_TEMPLATE, USER_XML_TEMPLATE
+from snipsync.environment import (
+    IdeEnum,
+    CONFIG_TEMPLATE,
+    USER_XML_TEMPLATE,
+    INTELIJ_CONFIG_DIR,
+)
 from snipsync.ultisnip import UltiSnipsFileSource
 from snipsync.xml_snippet import XmlSnippet, read_ultisnips
 
@@ -63,6 +68,8 @@ def parse_config(config_path) -> Dict:
 
     cfg["init"] = config["GLOBAL"].getboolean("init", fallback=False)
 
+    # if live_templates_path := config["DEFAULT"].get("live_templates_path") is None:
+    #     live_templates_path = f"{INTELIJ_CONFIG_DIR}/jba_config/templates"
     cfg["live_templates_path"] = Path(
         config["DEFAULT"].get("live_templates_path")
     ).expanduser()
