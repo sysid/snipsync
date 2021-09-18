@@ -9,7 +9,7 @@ from typing import Dict, List
 
 import typer
 
-from snipsync.settings import CONFIG_TEMPLATE, USER_XML_TEMPLATE, IdeEnum
+from snipsync.environment import IdeEnum, CONFIG_TEMPLATE, USER_XML_TEMPLATE
 from snipsync.ultisnip import UltiSnipsFileSource
 from snipsync.xml_snippet import XmlSnippet, read_ultisnips
 
@@ -55,15 +55,14 @@ def dir(
 
 def parse_config(config_path) -> Dict:
     cfg = dict()
-    config = configparser.ConfigParser(strict=True)
+    config = configparser.ConfigParser(strict=True, allow_no_value=True)
     config.read(config_path)
 
     # ultisnips = Path(config['DEFAULT']['ultisnips']).resolve()
     # live_templates = Path(config['DEFAULT']['live_templates']).resolve()
 
-    # cfg['ultisnips'] = ultisnips
-    # cfg['live_templates'] = live_templates
     cfg["init"] = config["GLOBAL"].getboolean("init", fallback=False)
+
     cfg["live_templates_path"] = Path(
         config["DEFAULT"].get("live_templates_path")
     ).expanduser()
@@ -97,7 +96,7 @@ def check_intellij_installation(p: Path) -> bool:
             break
     else:
         typer.secho(
-            f"Given path {p} invalid. Mus contain one of: {[ide.value for ide in IdeEnum]}",
+            f"Given path {p} invalid. Must contain one of: {[ide.value for ide in IdeEnum]}",
             color=typer.colors.RED,
         )
         raise typer.Abort()

@@ -4,7 +4,7 @@ import pytest
 
 from snipsync.lexer import EndOfTextToken, MirrorToken, TabStopToken, tokenize
 from snipsync.position import Position
-from snipsync.settings import ALLOWED_TOKENS
+from snipsync.environment import ALLOWED_TOKENS
 
 
 def test_tokenize():
