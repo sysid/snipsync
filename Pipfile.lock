@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "95ebdfaa4563fb905392e5c832204296f037d0d8f1cc126e11d30a6327a14c36"
+            "sha256": "88d823a152a06c799485d9ddfd4131c39df7c06da37b370587acc18d2030d680"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.9"
+            "python_version": "3.10"
         },
         "sources": [
             {
@@ -73,14 +73,6 @@
             "index": "pypi",
             "version": "==1.9.0"
         },
-        "sanitized-package": {
-            "editable": true,
-            "path": "."
-        },
-        "sanitized-package": {
-            "editable": true,
-            "path": "."
-        },
         "snipsync": {
             "editable": true,
             "path": "."
@@ -120,6 +112,9 @@
             "version": "==0.7.0"
         },
         "coverage": {
+            "extras": [
+                "toml"
+            ],
             "hashes": [
                 "sha256:01774a2c2c729619760320270e42cd9e797427ecfddd32c2a7b639cdc481f3c0",
                 "sha256:03b20e52b7d31be571c9c06b74746746d4eb82fc260e594dc662ed48145e9efd",

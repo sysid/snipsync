@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ab278348-99f5-4d9a-a763-26767a951efa" name="Default Changelist" comment="feat: replace MIRRORs">
-      <change beforePath="$PROJECT_DIR$/setup.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/setup.cfg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snipsync/environment.py" beforeDir="false" afterPath="$PROJECT_DIR$/snipsync/environment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snipsync/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/snipsync/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/snipsync/xml_snippet.py" beforeDir="false" afterPath="$PROJECT_DIR$/snipsync/xml_snippet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_tokenize.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_tokenize.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8438dcf6-e080-4129-8463-c854234510a1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/8438dcf6-e080-4129-8463-c854234510a1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +30,24 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/tests/data/config_invalid.cfg" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/snipsync/environment.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/setup.cfg" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Makefile" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tox.ini" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/test_cli.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/test_main.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/snipsync/main.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/test_environment.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/conftest.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/data/config.cfg" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/data/config_valid.cfg" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/data/user.xml.bkp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.github/workflows/build.yml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/test_io.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/tests/data/user_empty.xml.bkp" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="JsbtTreeLayoutManager">
     <layout place="tools.popupGrunt">
@@ -375,7 +390,9 @@
       <workItem from="1618734021340" duration="1546000" />
       <workItem from="1618994790582" duration="32000" />
       <workItem from="1627135124044" duration="22839000" />
-      <workItem from="1631963088106" duration="3940000" />
+      <workItem from="1631963088106" duration="4757000" />
+      <workItem from="1631990695846" duration="714000" />
+      <workItem from="1632034937778" duration="606000" />
     </task>
     <task id="LOCAL-00001" summary="feat: replace MIRRORs">
       <created>1614797220515</created>
