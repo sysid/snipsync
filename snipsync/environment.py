@@ -80,7 +80,7 @@ ALLOWED_TOKENS = [
 class IdeEnum(Enum):
     PYCHARM = "PyCharm"
     WEBSTORM = "WebStorm"
-    IDEAI = "IdeaI"
+    IDEA = "Idea"
     GOLAND = "GoLand"
 
 
