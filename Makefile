@@ -7,7 +7,7 @@ VERSION       = $(shell cat VERSION)
 
 .DEFAULT_GOAL := help
 
-app_root = .
+app_root := $(if $(PROJ_DIR),$(PROJ_DIR),$(CURDIR))
 pkg_src =  $(app_root)/snipsync
 tests_src = $(app_root)/tests
 
